@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: 50,
     paddingHorizontal: 20,
-    paddingVertical: 18,
+    paddingTop:'auto',
     backgroundColor: '#343434'
   },
   icon: {
@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   image: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignContent:'center'
   }
 });
 

@@ -8,7 +8,7 @@ const CustomHeader = ({ navigation }) => (
   <Header
     containerStyle={[styles.container]}
     leftComponent={<Icon name="menu" style={[styles.icon]} onPress={() => navigation.openDrawer()} />}
-    centerComponent={<Image style={[styles.image]} source={require('../../assets/logo.png')} />}
+    centerComponent={<Image style={[styles.image]} source={require('../../assets/images/logo.png')} />}
   />
 );
 

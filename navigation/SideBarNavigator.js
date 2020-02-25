@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator } from  '@react-navigation/drawer';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
@@ -8,13 +8,17 @@ const Drawer = createDrawerNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
 export default function SideBarNavigator({ navigation, route }) {
-    // Set the header title on the parent stack navigator depending on the
-    // currently active tab. Learn more in the documentation:
-    // https://reactnavigation.org/docs/en/screen-options-resolution.html
-    navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
     return (
-        <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+        <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME} drawerStyle={{
+            backgroundColor: '#343434',
+        }}
+                          drawerContentOptions={{
+                              activeTintColor: 'yellow',
+                              inactiveTintColor:'#fff'
+                          }}
+        drawerItemStyle
+        >
             <Drawer.Screen
                 name="Home"
                 component={HomeScreen}
