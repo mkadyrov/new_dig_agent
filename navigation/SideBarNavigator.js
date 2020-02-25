@@ -3,6 +3,9 @@ import { createDrawerNavigator } from  '@react-navigation/drawer';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
+import DetailsScreen from '../screens/DetailsScreen';
+import ComplaintsScreen from '../screens/ComplaintsScreen';
+import AbonentScreen from '../screens/AbonentScreen';
 
 const Drawer = createDrawerNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -32,6 +35,32 @@ export default function SideBarNavigator({ navigation, route }) {
                 component={LinksScreen}
                 options={{
                     title: 'Resources',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+            <Drawer.Screen
+                name="Details"
+                component={DetailsScreen}
+                options={{
+                    title: 'Details',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="ComplaintsScreen"
+                component={ComplaintsScreen}
+                options={{
+                    title: 'Complaints',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="AbonentScreen"
+                component={AbonentScreen}
+                options={{
+                    title: 'Abonent',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />
