@@ -9,14 +9,14 @@ import Copy from "../components/Copy";
 
 class ComplaintsScreen extends React.Component {
 
-  constructor(props) {
-    super(props);
+  constructor({ route, navigation }) {
+    super({ route, navigation });
     this.state = {
       abonents: [
         { phone: '7702 430 2021', rate: 1.5, time: '01:34', tab: 'A' },
         { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'A' },
         { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'A' },
-        { phone: '7702 430 2021', rate: 4.5, time: '01:34', tab: 'A' },
+        { phone: '7702 430 2021', rate: route.params.name, time: '01:34', tab: 'A' },
       ],
     };
     console.log(this.props.navigation);

@@ -20,7 +20,7 @@ class RateHomeBlock extends React.Component {
 
    nav() {
      this.props.navigation.setParams({name: 'ee'});
-     this.props.navigation.navigate('ComplaintsScreen');
+     this.props.navigation.navigate('ComplaintsScreen',{name: 3});
    };
 
    render() {
