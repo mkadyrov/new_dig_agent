@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Button, View, Text, Image } from 'react-native';
+import { StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -43,48 +43,50 @@ class AbonentScreen extends React.Component {
     return (
       <View style={styles.container}>
         <CustomHeader navigation={this.props.navigation}/>
-        <View style={styles.containerScreen}>
-          <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0}]}>Обрабатывает</Text>
-          <View style={styles.valueRow}>
-            <Text style={styles.valueRowText}>{this.state.item.user}</Text>
-            <Text style={styles.valueRowTab}>{this.state.item.tab}</Text>
+        <ScrollView>
+          <View style={styles.containerScreen}>
+            <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0}]}>Обрабатывает</Text>
+            <View style={styles.valueRow}>
+              <Text style={styles.valueRowText}>{this.state.item.user}</Text>
+              <Text style={styles.valueRowTab}>{this.state.item.tab}</Text>
+            </View>
+            <Text style={styles.label}>Абонент</Text>
+            <Text style={styles.value}>{this.state.item.phone}</Text>
+            <Text style={styles.label}>ФИО</Text>
+            <Text style={styles.value}>{this.state.item.name}</Text>
+            <Text style={styles.label}>ИИН</Text>
+            <Text style={styles.value}>{this.state.item.iin}</Text>
+            <Text style={styles.label}>Оценка</Text>
+            <View style={styles.rates}>
+              <Image style={styles.star} source={this.state.item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.state.item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.state.item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.state.item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.state.item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+            </View>
+            <Text style={styles.label}>Категория</Text>
+            <View style={styles.categoryBlock}>
+              {this.state.categoryes.map((category, index) =>
+                <View key={index} style={[styles.category, category.id == this.state.item.category ? styles.on : null]}>
+                  <Text style={[styles.categoryText, category.id == this.state.item.category ? styles.onText : null]}>{category.name}</Text>
+                </View>
+              )}
+            </View>
+            <Text style={styles.label}>Жалобы</Text>
+            <View style={styles.complaintBlock}>
+              {this.state.item.complaints.map((complaint, index) =>
+                <View key={index} style={styles.complaint}>
+                  <Text style={styles.complaintText}>{complaint.text}</Text>
+                </View>
+              )}
+            </View>
+            <Text style={styles.label}>Комментарий</Text>
+            <Text style={styles.value}>{this.state.item.comment}</Text>
+            <Text style={styles.label}>Фотография</Text>
+            <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
+            <Copy />
           </View>
-          <Text style={styles.label}>Абонент</Text>
-          <Text style={styles.value}>{this.state.item.phone}</Text>
-          <Text style={styles.label}>ФИО</Text>
-          <Text style={styles.value}>{this.state.item.name}</Text>
-          <Text style={styles.label}>ИИН</Text>
-          <Text style={styles.value}>{this.state.item.iin}</Text>
-          <Text style={styles.label}>Оценка</Text>
-          <View style={styles.rates}>
-            <Image style={styles.star} source={this.state.item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.state.item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.state.item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.state.item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.state.item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          </View>
-          <Text style={styles.label}>Категория</Text>
-          <View style={styles.categoryBlock}>
-            {this.state.categoryes.map((category, index) =>
-              <View key={index} style={[styles.category, category.id == this.state.item.category ? styles.on : null]}>
-                <Text style={[styles.categoryText, category.id == this.state.item.category ? styles.onText : null]}>{category.name}</Text>
-              </View>
-            )}
-          </View>
-          <Text style={styles.label}>Жалобы</Text>
-          <View style={styles.complaintBlock}>
-            {this.state.item.complaints.map((complaint, index) =>
-              <View key={index} style={styles.complaint}>
-                <Text style={styles.complaintText}>{complaint.text}</Text>
-              </View>
-            )}
-          </View>
-          <Text style={styles.label}>Комментарий</Text>
-          <Text style={styles.value}>{this.state.item.comment}</Text>
-          <Text style={styles.label}>Фотография</Text>
-          <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
-          <Copy />
-        </View>
+        </ScrollView>
       </View>
     );
   }

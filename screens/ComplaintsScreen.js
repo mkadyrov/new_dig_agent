@@ -9,17 +9,24 @@ import Copy from "../components/Copy";
 
 class ComplaintsScreen extends React.Component {
 
-  constructor({ route, navigation }) {
-    super({ route, navigation });
+  constructor(props) {
+    super(props);
     this.state = {
       abonents: [
         { phone: '7702 430 2021', rate: 1.5, time: '01:34', tab: 'A' },
         { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'A' },
         { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'A' },
-        { phone: '7702 430 2021', rate: route.params.name, time: '01:34', tab: 'A' },
+        { phone: '7702 430 2021', rate: 4.4, time: '01:34', tab: 'A' },
+      ],
+      title: this.props.route.params.title,
+      type: this.props.route.params.type,
+      text: [
+        'Список новых жалоб от абонента, с установленным рейтингом и количеством времени, за которое необходимо позвонить.',
+        'Список новых жалоб от абонента, с установленным рейтингом и количеством времени, за которое необходимо позвонить.',
+        'Список новых жалоб от абонента, с установленным рейтингом и количеством времени, за которое необходимо позвонить.',
+        'Список новых жалоб от абонента, с установленным рейтингом и количеством времени, за которое необходимо позвонить.',
       ],
     };
-    console.log(this.props.navigation);
   }
 
   render() {
@@ -27,10 +34,8 @@ class ComplaintsScreen extends React.Component {
       <View style={styles.container}>
         <CustomHeader navigation={this.props.navigation}/>
         <View style={styles.containerScreen}>
-          <Text style={styles.topTitle}>1</Text>
-          <Text style={styles.topTitleText}>
-            Список новых жалоб от абонента, с установленным рейтингом и количеством времени, за которое необходимо позвонить.
-          </Text>
+          <Text style={styles.topTitle}>{this.state.title}</Text>
+          <Text style={styles.topTitleText}>{this.state.text[this.state.type - 1]}</Text>
           <View style={styles.tableHead}>
             <Text style={styles.tableHead1}>Абонент</Text>
             <Text style={styles.tableHead2}>Рейтинг</Text>

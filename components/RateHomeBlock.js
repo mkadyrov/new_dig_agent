@@ -19,8 +19,11 @@ class RateHomeBlock extends React.Component {
    }
 
    nav() {
-     this.props.navigation.setParams({name: 'ee'});
-     this.props.navigation.navigate('ComplaintsScreen',{name: 3});
+     const params = {
+       title: this.props.title,
+       type: this.props.type,
+     };
+     this.props.navigation.navigate('ComplaintsScreen', params);
    };
 
    render() {
@@ -52,7 +55,9 @@ class RateHomeBlock extends React.Component {
           }
         </View>
         <View style={styles.tables}>
-
+          {this.abonents.map((item, index) =>
+            <RateHomeAbonent key={index} navigation={this.props.navigation} abonent={item} type="1" />
+          )}
         </View>
       </View>
     );

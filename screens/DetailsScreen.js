@@ -1,85 +1,94 @@
 import * as React from 'react';
-import { StyleSheet, Button, View, Text, Image } from 'react-native';
+import { StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
 
-import RatesDetailsScreen from "../components/RateHomeAbonent";
+import RatesDetailsScreen from "../components/RatesDetailsScreen";
 import Copy from "../components/Copy";
 
-export default function DetailsScreen({ navigation }) {
+class DetailsScreen extends React.Component {
 
-  const state = {
-    company: { name: 'Отделение №3, ЦОН Бостандыкского района, г.Алматы', rate: 3.5, },
-    rates: [
-      {rate: 5, counts: 34},
-      {rate: 4, counts: 1},
-      {rate: 3, counts: 100},
-      {rate: 2, counts: 2},
-      {rate: 1, counts: 50},
-    ],
-    counts: 241,
-    items: [
-      { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
-      { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
-      { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
-    ],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      company: { name: 'Отделение №3, ЦОН Бостандыкского района, г.Алматы', rate: 3.5, },
+      rates: [
+        {rate: 5, counts: 34},
+        {rate: 4, counts: 1},
+        {rate: 3, counts: 100},
+        {rate: 2, counts: 2},
+        {rate: 1, counts: 50},
+      ],
+      counts: 241,
+      items: [
+        { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
+        { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
+        { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
+      ],
+    };
+  }
 
-  return (
-    <View style={styles.container}>
-      <CustomHeader navigation={navigation}/>
-      <View style={styles.containerScreen}>
-        <Text style={styles.topTitle}>Рейтинг услугодателя</Text>
-        <Text style={styles.topTitleText}>
-          Отображение статистики услугодателя, в разрезе недели, месяца по сравнению с другими услугодателями и личный рейтинг.
-        </Text>
-        <View style={styles.ratesCont}>
-          <View style={styles.rateBlock}>
-            <Text style={styles.rateBlockTitleL}>Текущий рейтинг</Text>
-          </View>
-          <View style={styles.rateBlock}>
-            <Text style={styles.rateBlockTitleR}>Оценки</Text>
-          </View>
-        </View>
-        <View style={styles.ratesContBlock}>
-          <View style={styles.rateBlock}>
-            <Text style={styles.rate}>{state.company.rate}</Text>
-            <View style={styles.ratesBlock}>
-              <View style={styles.rates}>
-                <Image style={styles.star} source={state.company.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                <Image style={styles.star} source={state.company.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                <Image style={styles.star} source={state.company.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                <Image style={styles.star} source={state.company.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                <Image style={styles.star} source={state.company.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+  render() {
+    return (
+      <View style={styles.container}>
+        <CustomHeader navigation={this.props.navigation}/>
+        <ScrollView>
+          <View style={styles.containerScreen}>
+            <Text style={styles.topTitle}>Рейтинг услугодателя</Text>
+            <Text style={styles.topTitleText}>
+              Отображение статистики услугодателя, в разрезе недели, месяца по сравнению с другими услугодателями и личный рейтинг.
+            </Text>
+            <View style={styles.ratesCont}>
+              <View style={styles.rateBlock}>
+                <Text style={styles.rateBlockTitleL}>Текущий рейтинг</Text>
+              </View>
+              <View style={styles.rateBlock}>
+                <Text style={styles.rateBlockTitleR}>Оценки</Text>
               </View>
             </View>
-            <Text style={styles.rateCounts}>Оценили 241</Text>
-          </View>
-          <View style={styles.rateBlock}>
-            {state.rates.map((item, index) =>
-              <RatesDetailsScreen key={index} rate={item} counts={state.counts} />
-            )}
-          </View>
-        </View>
-        <View style={styles.tableHead}>
-          <Text style={styles.tableHead1}>Услугодатель</Text>
-          <Text style={styles.tableHead2}>Рейтинг</Text>
-        </View>
-        {state.items.map((item, index) =>
-          <View key={index} style={styles.tableRow}>
-            <Text style={styles.tableRow1}>{item.name}</Text>
-            <View style={styles.tableRow2}>
-              <Image style={styles.starRow} source={require('../assets/images/star.png')} />
-              <Text style={styles.tableRow2Text}>{item.rate}</Text>
+            <View style={styles.ratesContBlock}>
+              <View style={styles.rateBlock}>
+                <Text style={styles.rate}>{this.state.company.rate}</Text>
+                <View style={styles.ratesBlock}>
+                  <View style={styles.rates}>
+                    <Image style={styles.star} source={this.state.company.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                    <Image style={styles.star} source={this.state.company.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                    <Image style={styles.star} source={this.state.company.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                    <Image style={styles.star} source={this.state.company.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                    <Image style={styles.star} source={this.state.company.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                  </View>
+                </View>
+                <Text style={styles.rateCounts}>Оценили 241</Text>
+              </View>
+              <View style={styles.rateBlock}>
+                {this.state.rates.map((item, index) =>
+                  <RatesDetailsScreen key={index} rate={item} counts={this.state.counts} />
+                )}
+              </View>
             </View>
+            <View style={styles.tableHead}>
+              <Text style={styles.tableHead1}>Услугодатель</Text>
+              <Text style={styles.tableHead2}>Рейтинг</Text>
+            </View>
+            {this.state.items.map((item, index) =>
+              <View key={index} style={styles.tableRow}>
+                <Text style={styles.tableRow1}>{item.name}</Text>
+                <View style={styles.tableRow2}>
+                  <Image style={styles.starRow} source={require('../assets/images/star.png')} />
+                  <Text style={styles.tableRow2Text}>{item.rate}</Text>
+                </View>
+              </View>
+            )}
+            <Copy />
           </View>
-        )}
-        <Copy />
+        </ScrollView>
       </View>
-    </View>
-  );
+    );
+  };
 }
+
+export default DetailsScreen;
 
 const styles = StyleSheet.create({
   container: {
