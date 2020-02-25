@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Button, View, Text, Image } from 'react-native';
+import {StyleSheet, Button, View, Text, Image, ScrollView} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -17,6 +17,7 @@ export default function HomeScreen({ navigation }) {
   return (
       <View style={styles.container}>
         <CustomHeader navigation={navigation}/>
+        <ScrollView>
         <View style={styles.containerScreen}>
           <Text style={styles.topTitle}>Добро пожаловать</Text>
           <Text style={styles.topTitle}>{state.user.name}</Text>
@@ -78,6 +79,7 @@ export default function HomeScreen({ navigation }) {
           <RateHomeBlock navigation={navigation} title="Провеленные" type="4" />
           <Copy />
         </View>
+        </ScrollView>
       </View>
   );
 }
