@@ -41,19 +41,19 @@ const styles = StyleSheet.create({
   },
   rate: {
     width: '15%',
-    height: 20,
+    height: 18,
     fontSize: 11,
     paddingRight: 10,
     color: '#999',
   },
   bar: {
     width: '60%',
-    height: 22,
+    height: 18,
     flexDirection: 'row',
   },
   count: {
     width: '25%',
-    height: 20,
+    height: 18,
     fontSize: 11,
     textAlign: 'right',
     paddingLeft: 5,
@@ -61,6 +61,6 @@ const styles = StyleSheet.create({
   },
   progress: {
     backgroundColor: '#FFC53D',
-    height: 20,
+    height: 18,
   }
 });

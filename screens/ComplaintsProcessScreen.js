@@ -27,7 +27,9 @@ class ComplaintsProcessScreen extends React.Component {
         <CustomHeader navigation={this.props.navigation} title="В процессе" />
         <ScrollView>
           <View style={styles.containerScreen}>
-            <Text style={styles.topTitle}>В процессе</Text>
+            <Text style={styles.topTitle}>
+              <Image style={{ width: 25, height: 20, }} source={require('../assets/images/2.png')} /> В процессе
+            </Text>
             <Text style={styles.topTitleText}>Нет данных</Text>
             <View style={styles.tableHead}>
               <Text style={styles.tableHead1}>Абонент</Text>
@@ -59,17 +61,12 @@ const styles = StyleSheet.create({
   topTitle: {
     fontSize: 20,
     paddingBottom: 20,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   topTitleText: {
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: 'left',
     color: '#777',
-    backgroundColor: '#FFF',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    padding: 10,
   },
   tableHead: {
     flexDirection: 'row',

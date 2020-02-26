@@ -27,7 +27,9 @@ class ComplaintsNewScreen extends React.Component {
         <CustomHeader navigation={this.props.navigation} title="Новые жалобы" />
         <ScrollView>
           <View style={styles.containerScreen}>
-            <Text style={styles.topTitle}>Новые жалобы</Text>
+            <Text style={styles.topTitle}>
+              <Image style={{ width: 25, height: 20, }} source={require('../assets/images/1.png')} /> Новые жалобы
+            </Text>
             <Text style={styles.topTitleText}>Список новых жалоб от абонента, с установленным рейтингом и количеством времени, за которое необходимо позвонить.</Text>
             <View style={styles.tableHead}>
               <Text style={styles.tableHead1}>Абонент</Text>
@@ -59,17 +61,12 @@ const styles = StyleSheet.create({
   topTitle: {
     fontSize: 20,
     paddingBottom: 20,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   topTitleText: {
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: 'left',
     color: '#777',
-    backgroundColor: '#FFF',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    padding: 10,
   },
   tableHead: {
     flexDirection: 'row',

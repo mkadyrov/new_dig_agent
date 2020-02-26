@@ -27,7 +27,7 @@ class AbonentScreen extends React.Component {
         user: 'Досаев Ержан',
         name: 'Ахметов Бауржан Ермекович',
         iin: '781210400357',
-        category: 3,
+        category: 2,
         complaints: [
           { text: 'Не компетентность персонала' },
           { text: 'Время ожидания в очереди' },
@@ -70,8 +70,22 @@ class AbonentScreen extends React.Component {
             <Text style={styles.label}>Категория</Text>
             <View style={styles.categoryBlock}>
               {this.state.categoryes.map((category, index) =>
-                <View key={index} style={[styles.category, category.id == this.state.item.category ? styles.on : null]}>
-                  <Text style={[styles.categoryText, category.id == this.state.item.category ? styles.onText : null]}>{category.name}</Text>
+                <View key={index} style={styles.category}>
+                  <View key={index} style={[styles.categoryTab, category.id == this.state.item.category ? styles.on : null]}>
+                    {category.id == 1 &&
+                      <Image style={styles.catImg} source={require('../assets/images/comfort.png')} />
+                    }
+                    {category.id == 2 &&
+                      <Image style={styles.catImg} source={require('../assets/images/service.png')} />
+                    }
+                    {category.id == 3 &&
+                      <Image style={styles.catImg} source={require('../assets/images/procedure.png')} />
+                    }
+                    {category.id == 4 &&
+                      <Image style={styles.catImg} source={require('../assets/images/personal.png')} />
+                    }
+                  </View>
+                  <Text style={styles.categoryText}>{category.name}</Text>
                 </View>
               )}
             </View>
@@ -171,27 +185,41 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   star: {
-    width: 15,
-    height: 15,
+    width: 24,
+    height: 24,
     marginRight: 5,
     marginTop: -1,
   },
   categoryBlock: {
     width: '100%',
     paddingBottom: 20,
+    flexDirection: 'row',
+    flexWrap: 'nowrap'
   },
   category: {
-    width: '100%',
+    width: '25%',
+    padding: 5,
+    color: '#333',
+  },
+  categoryTab:{
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: '#DDD',
-    marginTop: 15,
-    padding: 10,
-    color: '#333',
+    backgroundColor: '#FFF',
+    borderRadius: 5,
+    alignItems: 'center',
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  catImg: {
+    width: 30,
   },
   categoryText: {
-    fontSize: 13,
+    fontSize: 9,
     color: '#333',
+    width: '100%',
+    textAlign: 'center',
+    paddingTop: 5,
   },
   on: {
     borderColor: '#FFC53D',

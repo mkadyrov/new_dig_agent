@@ -43,7 +43,9 @@ class ComplaintsProcessedScreen extends React.Component {
         <CustomHeader navigation={this.props.navigation} title="Обработанные" />
         <ScrollView>
           <View style={styles.containerScreen}>
-            <Text style={styles.topTitle}>Обработанные</Text>
+            <Text style={styles.topTitle}>
+              <Image style={{ width: 25, height: 20, }} source={require('../assets/images/3.png')} /> Обработанные
+            </Text>
             <Text style={styles.topTitleText}>Список обработанных жалоб от абонента, с разделением на сотрудников, которые их обработали.</Text>
             {this.state.items.map((item, index) =>
               <View key={index} style={styles.row}>
@@ -86,17 +88,12 @@ const styles = StyleSheet.create({
   topTitle: {
     fontSize: 20,
     paddingBottom: 20,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   topTitleText: {
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: 'left',
     color: '#777',
-    backgroundColor: '#FFF',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    padding: 10,
   },
   row: {
     marginTop: 30,

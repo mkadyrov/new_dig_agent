@@ -23,8 +23,8 @@ class HomeScreen extends React.Component {
           <CustomHeader navigation={this.props.navigation} title="" />
           <ScrollView>
             <View style={styles.containerScreen}>
-              <Text style={styles.topTitle}>Добро пожаловать</Text>
-              <Text style={styles.topTitle}>{this.state.user.name}!</Text>
+              <Text style={[styles.topTitle, {paddingBottom: 0}]}>Добро пожаловать</Text>
+              <Text style={[styles.topTitle, {fontSize: 19}]}>{this.state.user.name}!</Text>
               <View style={styles.companyRate}>
                 <Text style={styles.nameCompany}>{this.state.company.name}</Text>
                 <View style={styles.companyRateCont}>
@@ -100,18 +100,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   topTitle: {
-    fontSize: 23,
+    fontSize: 20,
     paddingBottom: 10,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   companyRate: {
-    backgroundColor: '#FFF',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingTop: 10,
+    paddingTop: 0,
     marginTop: 15,
   },
   nameCompany: {
@@ -131,14 +125,14 @@ const styles = StyleSheet.create({
   companyRateBlock: {
     paddingTop: 15,
     paddingBottom: 10,
-    width: '50%',
+    width: '30%',
     flexDirection: 'row',
     alignItems: 'center',
   },
   companyRateLink: {
     width: '100%',
     fontSize: 11,
-    textAlign: 'right',
+    textAlign: 'left',
     color: '#FAAD14',
     textTransform: 'uppercase',
   },

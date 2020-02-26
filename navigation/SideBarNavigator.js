@@ -7,6 +7,7 @@ import AbonentScreen from '../screens/AbonentScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import HelpScreen from '../screens/HelpScreen';
+import LoginScreen from '../screens/LoginScreen';
 
 import ComplaintsNewScreen from '../screens/ComplaintsNewScreen';
 import ComplaintsProcessScreen from '../screens/ComplaintsProcessScreen';
@@ -14,7 +15,7 @@ import ComplaintsProcessedScreen from '../screens/ComplaintsProcessedScreen';
 import ComplaintsFailedScreen from '../screens/ComplaintsFailedScreen';
 
 const Drawer = createDrawerNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = 'Login';
 
 export default function SideBarNavigator({ navigation, route }) {
 
@@ -26,6 +27,14 @@ export default function SideBarNavigator({ navigation, route }) {
             inactiveTintColor:'#fff'
           }}
           drawerItemStyle>
+            <Drawer.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                    title: 'Авторизация',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+                }}
+            />
             <Drawer.Screen
                 name="Home"
                 component={HomeScreen}

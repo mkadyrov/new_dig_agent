@@ -37,7 +37,7 @@ class RateHomeBlock extends React.Component {
             }
             <Text style={styles.titleText}>{this.props.title}</Text>
           </View>
-          <Text style={styles.link} onPress={() => this.props.navigation.navigate(this.props.link)}>Подробнее</Text>
+          <Text style={styles.link} onPress={() => this.props.navigation.navigate(this.props.link)}>Посмотреть все</Text>
         </View>
         <View style={styles.tableHead}>
           <Text style={styles.tableHead1}>Абонент</Text>

@@ -86,13 +86,15 @@ class DetailsScreen extends React.Component {
             </View>
             <Text style={styles.rateBlockTitle}>Рейтинг по категории</Text>
             <View style={styles.tableHead}>
-              <Text style={styles.tableHead1}>Услугодатель</Text>
-              <Text style={styles.tableHead2}>Рейтинг</Text>
+              <Text style={styles.tableHead1}>N</Text>
+              <Text style={styles.tableHead2}>Услугодатель</Text>
+              <Text style={styles.tableHead3}>Рейтинг</Text>
             </View>
             {this.state.items.map((item, index) =>
               <View key={index} style={styles.tableRow}>
-                <Text style={styles.tableRow1}>{item.name}</Text>
-                <View style={styles.tableRow2}>
+                <Text style={styles.tableRow1}>{index + 1}</Text>
+                <Text style={styles.tableRow2}>{item.name}</Text>
+                <View style={styles.tableRow3}>
                   <Image style={styles.starRow} source={require('../assets/images/star.png')} />
                   <Text style={styles.tableRow2Text}>{item.rate}</Text>
                 </View>
@@ -118,17 +120,12 @@ const styles = StyleSheet.create({
   topTitle: {
     fontSize: 20,
     paddingBottom: 20,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   topTitleText: {
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: 'left',
     color: '#777',
-    backgroundColor: '#FFF',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    padding: 10,
   },
   ratesCont: {
     width: '100%',
@@ -196,7 +193,7 @@ const styles = StyleSheet.create({
   },
   ratesBlock: {
     paddingRight: 20,
-    paddingTop: 20,
+    paddingTop: 15,
   },
   rates: {
     flexDirection: 'row',
@@ -211,7 +208,7 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'left',
     paddingRight: 20,
-    paddingTop: 25,
+    paddingTop: 15,
     flexDirection: 'row',
   },
   rateIcon: {
@@ -232,32 +229,39 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   tableHead1: {
-    width: '70%',
+    width: '15%',
     color: '#777',
     fontSize: 13,
-    textAlign: 'left',
   },
   tableHead2: {
-    width: '30%',
+    width: '60%',
+    color: '#777',
+    fontSize: 13,
+  },
+  tableHead3: {
+    width: '25%',
     color: '#777',
     fontSize: 13,
     textAlign: 'right',
   },
   tableRow: {
     flexDirection: 'row',
-    backgroundColor: '#FFF',
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderColor: '#DDD',
     borderStyle: 'solid',
-    marginTop: 15,
-    padding: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   tableRow1: {
-    width: '70%',
+    width: '15%',
     fontSize: 12,
   },
   tableRow2: {
-    width: '30%',
+    width: '60%',
+    fontSize: 12,
+  },
+  tableRow3: {
+    width: '25%',
     fontSize: 12,
     justifyContent: 'flex-end',
     flexDirection: 'row',
