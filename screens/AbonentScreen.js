@@ -3,6 +3,7 @@ import { StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
+import { Icon } from 'native-base';
 
 import Copy from "../components/Copy";
 
@@ -36,19 +37,21 @@ class AbonentScreen extends React.Component {
         photo: '',
         tab: 'Д',
       },
+      type: 3,
+      titles: ['Новая жалоба', 'В процессе', 'Обработанные', 'Проваленные'],
     };
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <CustomHeader navigation={this.props.navigation}/>
+        <CustomHeader navigation={this.props.navigation} title={this.state.titles[this.state.type - 1]} />
         <ScrollView>
           <View style={styles.containerScreen}>
-            <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0}]}>Обрабатывает</Text>
-            <View style={styles.valueRow}>
-              <Text style={styles.valueRowText}>{this.state.item.user}</Text>
-              <Text style={styles.valueRowTab}>{this.state.item.tab}</Text>
+            <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обрабатывает</Text>
+            <View style={[styles.value, {flexDirection: 'row'}]}>
+              <View style={styles.tab}><Text style={styles.value}>{this.state.item.tab}</Text></View>
+              <Text style={[styles.value, {marginTop: 5}]}>{this.state.item.name}</Text>
             </View>
             <Text style={styles.label}>Абонент</Text>
             <Text style={styles.value}>{this.state.item.phone}</Text>
@@ -84,8 +87,21 @@ class AbonentScreen extends React.Component {
             <Text style={styles.value}>{this.state.item.comment}</Text>
             <Text style={styles.label}>Фотография</Text>
             <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
-            <Copy />
+            {this.state.type != 1 &&
+              <Copy />
+            }
           </View>
+          {this.state.type == 1 &&
+            <View style={styles.callBlock}>
+              <View style={styles.callButton}>
+                <Text style={styles.callText}>Позвонить</Text>
+                <View style={styles.callTime}>
+                  <Icon name="stopwatch" style={styles.callIcon} />
+                  <Text style={styles.callTimeText}>01:23</Text>
+                </View>
+              </View>
+            </View>
+          }
         </ScrollView>
       </View>
     );
@@ -96,7 +112,7 @@ export default AbonentScreen;
 
 const styles = StyleSheet.create({
   container: {
-
+    height: '100%',
   },
   containerScreen: {
     padding: 20,
@@ -107,7 +123,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderStyle: 'solid',
     borderColor: '#DDD',
+    paddingBottom: 10,
     paddingTop: 15,
+    marginTop: 20,
   },
   valueRow: {
     flexDirection: 'row',
@@ -133,8 +151,16 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 15,
     color: '#333',
-    paddingTop: 10,
-    paddingBottom: 15,
+  },
+  tab: {
+    backgroundColor: '#E8E8E8',
+    borderRadius: 40,
+    width: 40,
+    height: 40,
+    marginRight: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingTop: 5,
   },
   rates: {
     width: '40%',
@@ -190,5 +216,41 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 15,
     marginBottom: 15,
+  },
+  callBlock: {
+    width: '100%',
+    backgroundColor: '#FFF',
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
+    padding: 20,
+  },
+  callButton: {
+    backgroundColor: '#FEC63F',
+    flexDirection: 'row',
+  },
+  callText: {
+    width: '65%',
+    textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 13,
+  },
+  callTime: {
+    width: '35%',
+    borderLeftWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#E8AD2B',
+    paddingTop: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  callIcon:{
+    fontSize: 22,
+    paddingRight: 10,
+  },
+  callTimeText: {
+    fontSize: 13,
   }
 });

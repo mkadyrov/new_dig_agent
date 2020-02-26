@@ -12,19 +12,11 @@ class RateHomeBlock extends React.Component {
      this.state = {};
      this.abonents = [
       { phone: '7702 430 2021', rate: 1.5, time: '01:34', tab: 'A' },
-      { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'A' },
-      { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'A' },
+      { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'Д' },
+      { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'Р' },
       { phone: '7702 430 2021', rate: 4.5, time: '01:34', tab: 'A' },
     ];
    }
-
-   nav() {
-     const params = {
-       title: this.props.title,
-       type: this.props.type,
-     };
-     this.props.navigation.navigate('ComplaintsScreen', params);
-   };
 
    render() {
     return (
@@ -45,7 +37,7 @@ class RateHomeBlock extends React.Component {
             }
             <Text style={styles.titleText}>{this.props.title}</Text>
           </View>
-          <Text style={styles.link} onPress={() => this.nav()}>Подробнее</Text>
+          <Text style={styles.link} onPress={() => this.props.navigation.navigate(this.props.link)}>Подробнее</Text>
         </View>
         <View style={styles.tableHead}>
           <Text style={styles.tableHead1}>Абонент</Text>
@@ -56,7 +48,7 @@ class RateHomeBlock extends React.Component {
         </View>
         <View style={styles.tables}>
           {this.abonents.map((item, index) =>
-            <RateHomeAbonent key={index} navigation={this.props.navigation} abonent={item} type="1" />
+            <RateHomeAbonent key={index} navigation={this.props.navigation} abonent={item} type={this.props.type} />
           )}
         </View>
       </View>
@@ -94,10 +86,9 @@ const styles = StyleSheet.create({
   tableHead: {
     flexDirection: 'row',
     padding: 10,
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderColor: '#DDD',
     borderStyle: 'solid',
-    backgroundColor: '#E8E8E8',
     marginTop: 15,
   },
   tableHead1: {

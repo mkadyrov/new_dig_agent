@@ -21,8 +21,8 @@ class RatesDetailsScreen extends React.Component {
         <Text style={styles.rate}>{this.props.rate.rate}</Text>
         <View style={styles.bar} onLayout={() => this.onLayout(this.props.rate.counts)}>
           <View style={[styles.progress, {width: this.state.width}]}></View>
+          <Text style={styles.count}>{this.props.rate.counts}</Text>
         </View>
-        <Text style={styles.count}>{this.props.rate.counts}</Text>
       </View>
     );
   };
@@ -44,15 +44,12 @@ const styles = StyleSheet.create({
     height: 20,
     fontSize: 11,
     paddingRight: 10,
-    color: '#444',
+    color: '#999',
   },
   bar: {
     width: '60%',
     height: 22,
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#FFC53D',
+    flexDirection: 'row',
   },
   count: {
     width: '25%',
@@ -64,9 +61,6 @@ const styles = StyleSheet.create({
   },
   progress: {
     backgroundColor: '#FFC53D',
-    height: '100%',
-    position: 'absolute',
-    left: 0,
-    top: 0,
+    height: 20,
   }
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Header, ScrollView, Platform, StatusBar, StyleSheet, View} from 'react-native';
+import {Header, ScrollView, Platform, StatusBar, StyleSheet, View, Text} from 'react-native';
 import {Icon, SplashScreen} from 'expo';
 import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
@@ -55,11 +55,8 @@ export default function App(props) {
                 <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
                     <Stack.Navigator headerMode="none">
                         <Stack.Screen name="Root" component={SideBarNavigator} options={{
-                            headerStyle: {
-                                backgroundColor: '#343434',
-                            },
+                            headerStyle: {backgroundColor: '#343434'},
                             headerTitleAlign: "center",
-
                         }}/>
                     </Stack.Navigator>
                 </NavigationContainer>
@@ -70,7 +67,7 @@ export default function App(props) {
 
 const styles = StyleSheet.create({
     container: {
-      marginTop: (Platform.OS === 'ios') ? 0 : 40,
+      marginTop: (Platform.OS === 'ios') ? 0 : 20,
         flex: 1,
         backgroundColor: '#fff',
     },

@@ -12,7 +12,7 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { name: 'Арсен Арсен' },
+      user: { name: 'Арсен Калимулдаевич' },
       company: { name: 'Отделение №3, ЦОН Бостандыкского района, г.Алматы', rate: 3.5, },
     };
   }
@@ -20,11 +20,11 @@ class HomeScreen extends React.Component {
   render() {
     return (
         <View style={styles.container}>
-          <CustomHeader navigation={this.props.navigation}/>
+          <CustomHeader navigation={this.props.navigation} title="" />
           <ScrollView>
             <View style={styles.containerScreen}>
               <Text style={styles.topTitle}>Добро пожаловать</Text>
-              <Text style={styles.topTitle}>{this.state.user.name}</Text>
+              <Text style={styles.topTitle}>{this.state.user.name}!</Text>
               <View style={styles.companyRate}>
                 <Text style={styles.nameCompany}>{this.state.company.name}</Text>
                 <View style={styles.companyRateCont}>
@@ -77,10 +77,10 @@ class HomeScreen extends React.Component {
                   </View>
                 </View>
               </View>
-              <RateHomeBlock navigation={this.props.navigation} title="Новые жалобы" type="1" />
-              <RateHomeBlock navigation={this.props.navigation} title="В процессе" type="2" />
-              <RateHomeBlock navigation={this.props.navigation} title="Обработанные" type="3" />
-              <RateHomeBlock navigation={this.props.navigation} title="Проверенные" type="4" />
+              <RateHomeBlock navigation={this.props.navigation} title="Новые жалобы" type="1" link="ComplaintsNewScreen" />
+              <RateHomeBlock navigation={this.props.navigation} title="В процессе" type="2" link="ComplaintsProcessScreen" />
+              <RateHomeBlock navigation={this.props.navigation} title="Обработанные" type="3" link="ComplaintsProcessedScreen" />
+              <RateHomeBlock navigation={this.props.navigation} title="Проваленные" type="4" link="ComplaintsFailedScreen" />
               <Copy />
             </View>
           </ScrollView>

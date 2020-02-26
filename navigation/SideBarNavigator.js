@@ -2,10 +2,16 @@ import * as React from 'react';
 import { createDrawerNavigator } from  '@react-navigation/drawer';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import DetailsScreen from '../screens/DetailsScreen';
-import ComplaintsScreen from '../screens/ComplaintsScreen';
 import AbonentScreen from '../screens/AbonentScreen';
+import HistoryScreen from '../screens/HistoryScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import HelpScreen from '../screens/HelpScreen';
+
+import ComplaintsNewScreen from '../screens/ComplaintsNewScreen';
+import ComplaintsProcessScreen from '../screens/ComplaintsProcessScreen';
+import ComplaintsProcessedScreen from '../screens/ComplaintsProcessedScreen';
+import ComplaintsFailedScreen from '../screens/ComplaintsFailedScreen';
 
 const Drawer = createDrawerNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -13,54 +19,98 @@ const INITIAL_ROUTE_NAME = 'Home';
 export default function SideBarNavigator({ navigation, route }) {
 
     return (
-        <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME} drawerStyle={{
-            backgroundColor: '#343434',
-        }}
-                          drawerContentOptions={{
-                              activeTintColor: 'yellow',
-                              inactiveTintColor:'#fff'
-                          }}
-        drawerItemStyle
-        >
+        <Drawer.Navigator
+          initialRouteName={INITIAL_ROUTE_NAME} drawerStyle={{backgroundColor: '#343434'}}
+          drawerContentOptions={{
+            activeTintColor: 'yellow',
+            inactiveTintColor:'#fff'
+          }}
+          drawerItemStyle>
             <Drawer.Screen
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    title: 'Get Started',
+                    title: 'Главная',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
-                }}
-            />
-            <Drawer.Screen
-                name="Links"
-                component={LinksScreen}
-                options={{
-                    title: 'Resources',
-                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />
             <Drawer.Screen
                 name="Details"
                 component={DetailsScreen}
                 options={{
-                    title: 'Details',
+                    title: 'Рейтинг услогодателя',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />
 
             <Drawer.Screen
-                name="ComplaintsScreen"
-                component={ComplaintsScreen}
-                options={{
-                    title: 'Complaints',
-                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-                }}
-            />
-
-            <Drawer.Screen
-                name="AbonentScreen"
+                name="Abonent"
                 component={AbonentScreen}
                 options={{
-                    title: 'Abonent',
+                    title: 'Абонент',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="ProfileScreen"
+                component={ProfileScreen}
+                options={{
+                    title: 'Профиль',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="HistoryScreen"
+                component={HistoryScreen}
+                options={{
+                    title: 'История',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="HelpScreen"
+                component={HelpScreen}
+                options={{
+                    title: 'Помощь',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="ComplaintsNewScreen"
+                component={ComplaintsNewScreen}
+                options={{
+                    title: 'Новые жалобы',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="ComplaintsProcessScreen"
+                component={ComplaintsProcessScreen}
+                options={{
+                    title: 'В процессе',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="ComplaintsProcessedScreen"
+                component={ComplaintsProcessedScreen}
+                options={{
+                    title: 'Обработанные',
+                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                }}
+            />
+
+            <Drawer.Screen
+                name="ComplaintsFailedScreen"
+                component={ComplaintsFailedScreen}
+                options={{
+                    title: 'Проваленные',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />

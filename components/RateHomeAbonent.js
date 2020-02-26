@@ -3,30 +3,40 @@ import { StyleSheet, View, Image, Text } from 'react-native';
 import { Icon } from 'native-base';
 import { Header } from 'react-native-elements';
 
-export default function RateHomeAbonent({ navigation, abonent, type }) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.phone}>{abonent.phone}</Text>
-      <View style={styles.rates}>
-        <Image style={styles.star} source={abonent.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-        <Image style={styles.star} source={abonent.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-        <Image style={styles.star} source={abonent.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-        <Image style={styles.star} source={abonent.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-        <Image style={styles.star} source={abonent.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+class RateHomeAbonent extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.phone} onPress={() => this.props.navigation.navigate('Abonent')}>{this.props.abonent.phone}</Text>
+        <View style={styles.rates}>
+          <Image style={styles.star} source={this.props.abonent.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.abonent.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.abonent.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.abonent.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.abonent.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+        </View>
+        <View style={styles.time}>
+          {this.props.type == 1 &&
+            <Text style={styles.tabTime} onPress={() => this.props.navigation.navigate('Abonent')}>{this.props.abonent.time}</Text>
+          }
+          {this.props.type != 1 &&
+            <View style={styles.tab}>
+              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('Abonent')}>{this.props.abonent.tab}</Text>
+            </View>
+          }
+        </View>
       </View>
-      <View style={styles.time}>
-        {type == 1 &&
-          <Text style={styles.tabTime}>{abonent.time}</Text>
-        }
-        {type != 1 &&
-          <View style={styles.tab}>
-            <Text style={styles.tabText}>{abonent.tab}</Text>
-          </View>
-        }
-      </View>
-    </View>
-  );
+    );
+  }
 };
+
+export default RateHomeAbonent;
 
 const styles = StyleSheet.create({
   container: {
