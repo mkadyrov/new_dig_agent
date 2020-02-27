@@ -79,10 +79,10 @@ class HomeScreen extends React.Component {
                   </View>
                 </View>
               </View>
-              <RateHomeBlock navigation={this.props.navigation} title="Новые жалобы" type="1" link="ComplaintsNewScreen" />
-              <RateHomeBlock navigation={this.props.navigation} title="В процессе" type="2" link="ComplaintsProcessScreen" />
-              <RateHomeBlock navigation={this.props.navigation} title="Обработанные" type="3" link="ComplaintsProcessedScreen" />
-              <RateHomeBlock navigation={this.props.navigation} title="Проваленные" type="4" link="ComplaintsFailedScreen" />
+              <RateHomeBlock navigation={this.props.navigation} title="Новые жалобы" type="1" link="ComplaintsNewScreen" sublink="AbonentComplaintNewScreen" />
+              <RateHomeBlock navigation={this.props.navigation} title="В процессе" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
+              <RateHomeBlock navigation={this.props.navigation} title="Обработанные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
+              <RateHomeBlock navigation={this.props.navigation} title="Проваленные" type="4" link="ComplaintsFailedScreen" sublink="AbonentComplaintFailedScreen" />
               <Copy />
             </View>
           </ScrollView>

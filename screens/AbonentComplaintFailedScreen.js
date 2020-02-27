@@ -7,7 +7,7 @@ import { Icon } from 'native-base';
 
 import Copy from "../components/Copy";
 
-class AbonentScreen extends React.Component {
+class AbonentComplaintFailedScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -37,15 +37,13 @@ class AbonentScreen extends React.Component {
         photo: '',
         tab: 'Д',
       },
-      type: this.props.route.params.type,
-      titles: ['Новая жалоба', 'В процессе', 'Обработанные', 'Проваленные'],
     };
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <CustomHeader navigation={this.props.navigation} title={this.state.titles[this.state.type - 1]} link={this.props.route.params.back} />
+        <CustomHeader navigation={this.props.navigation} title='Проваленная' />
         <ScrollView>
           <View style={styles.containerScreen}>
             <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обрабатывает</Text>
@@ -72,18 +70,7 @@ class AbonentScreen extends React.Component {
               {this.state.categoryes.map((category, index) =>
                 <View key={index} style={styles.category}>
                   <View key={index} style={[styles.categoryTab, category.id == this.state.item.category ? styles.on : null]}>
-                    {category.id == 1 &&
-                      <Image style={styles.catImg} source={require('../assets/images/comfort.png')} />
-                    }
-                    {category.id == 2 &&
-                      <Image style={styles.catImg} source={require('../assets/images/service.png')} />
-                    }
-                    {category.id == 3 &&
-                      <Image style={styles.catImg} source={require('../assets/images/procedure.png')} />
-                    }
-                    {category.id == 4 &&
-                      <Image style={styles.catImg} source={require('../assets/images/personal.png')} />
-                    }
+                    <Image style={styles.catImg} source={require('../assets/images/comfort.png')} />
                   </View>
                   <Text style={styles.categoryText}>{category.name}</Text>
                 </View>
@@ -101,35 +88,15 @@ class AbonentScreen extends React.Component {
             <Text style={styles.value}>{this.state.item.comment}</Text>
             <Text style={styles.label}>Фотография</Text>
             <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
-            {this.state.type != 1 &&
-              <Copy />
-            }
-          </View>
-          {this.state.type == 1 &&
-            <View style={styles.callBlock}>
-              <View style={styles.callButton}>
-                <Text style={styles.callText}>Позвонить</Text>
-                <View style={styles.callTime}>
-                  <Icon name="stopwatch" style={styles.callIcon} />
-                  <Text style={styles.callTimeText}>01:23</Text>
-                </View>
-              </View>
-            </View>
-          }
-          {this.state.type == 1 &&
-            <View style={styles.callBlock}>
-              <View style={styles.callButton}>
-                <Text style={[styles.callText, {width: '100%'}]}>Отправить потверждение для закрытия жалобы</Text>
-              </View>
-            </View>
-          }
+            <Copy />
+          </View>          
         </ScrollView>
       </View>
     );
   }
 }
 
-export default AbonentScreen;
+export default AbonentComplaintFailedScreen;
 
 const styles = StyleSheet.create({
   container: {

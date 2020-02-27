@@ -5,7 +5,7 @@ import { Header } from 'react-native-elements';
 import styles from './styles';
 import { NavigationActions } from 'react-navigation';
 
-const CustomHeader = ({ navigation, title, link = 'Home' }) => {
+const CustomHeader = ({ navigation, title }) => {
   if (title == '') {
     return (<Header
       containerStyle={[styles.container]}
@@ -15,7 +15,7 @@ const CustomHeader = ({ navigation, title, link = 'Home' }) => {
   } else {
     return (<Header
       containerStyle={[styles.container]}
-      leftComponent={<Icon name="arrow-back" style={[styles.icon]} onPress={() => navigation.navigate(link)} />}
+      leftComponent={<Icon name="arrow-back" style={[styles.icon]} onPress={() => navigation.goBack()} />}
       centerComponent={<Text style={[styles.text]}>{title}</Text>}
     />);
   }

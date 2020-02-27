@@ -12,17 +12,10 @@ class RateHomeAbonent extends React.Component {
     console.log(this.props);
   }
 
-  navSet(val) {
-    this.props.navigation.reset({
-      index: 3,
-      routes: [{ name: 'Abonent', params: {type: this.props.type, back: this.props.back}}],
-    });
-  }
-
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.phone} onPress={() => this.navSet()}>{this.props.abonent.phone}</Text>
+        <Text style={styles.phone} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.abonent.phone}</Text>
         <View style={styles.rates}>
           <Image style={styles.star} source={this.props.abonent.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
           <Image style={styles.star} source={this.props.abonent.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
@@ -32,11 +25,11 @@ class RateHomeAbonent extends React.Component {
         </View>
         <View style={styles.time}>
           {this.props.type == 1 &&
-            <Text style={styles.tabTime} onPress={() => this.navSet()}>{this.props.abonent.time}</Text>
+            <Text style={styles.tabTime} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.abonent.time}</Text>
           }
           {this.props.type != 1 &&
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={() => this.navSet()}>{this.props.abonent.tab}</Text>
+              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.abonent.tab}</Text>
             </View>
           }
         </View>
