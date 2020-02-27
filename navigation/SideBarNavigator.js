@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { Text } from 'react-native';
 import { createDrawerNavigator } from  '@react-navigation/drawer';
+
 import TabBarIcon from '../components/TabBarIcon';
+
 import HomeScreen from '../screens/HomeScreen';
 import DetailsScreen from '../screens/DetailsScreen';
 import AbonentScreen from '../screens/AbonentScreen';
@@ -8,33 +11,38 @@ import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import HelpScreen from '../screens/HelpScreen';
 import LoginScreen from '../screens/LoginScreen';
-
 import ComplaintsNewScreen from '../screens/ComplaintsNewScreen';
 import ComplaintsProcessScreen from '../screens/ComplaintsProcessScreen';
 import ComplaintsProcessedScreen from '../screens/ComplaintsProcessedScreen';
 import ComplaintsFailedScreen from '../screens/ComplaintsFailedScreen';
 
+import DrawerContent from './DrawerContent';
+
 const Drawer = createDrawerNavigator();
-const INITIAL_ROUTE_NAME = 'Login';
+const INITIAL_ROUTE_NAME = 'Home';
 
 export default function SideBarNavigator({ navigation, route }) {
 
     return (
         <Drawer.Navigator
-          initialRouteName={INITIAL_ROUTE_NAME} drawerStyle={{backgroundColor: '#343434'}}
+          initialRouteName={INITIAL_ROUTE_NAME} drawerStyle={{backgroundColor: '#FFFFFF'}}
           drawerContentOptions={{
             activeTintColor: 'yellow',
             inactiveTintColor:'#fff'
           }}
-          drawerItemStyle>
+          drawerItemStyle
+          drawerContent={DrawerContent}>
+
             <Drawer.Screen
                 name="Login"
                 component={LoginScreen}
                 options={{
-                    title: 'Авторизация',
+                    title: 'Вход',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+                    gestureEnabled: false,
                 }}
             />
+
             <Drawer.Screen
                 name="Home"
                 component={HomeScreen}

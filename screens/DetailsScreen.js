@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
 import { Icon } from 'native-base';
 
+import BarChartExample from "../components/BarChartExample";
 import RatesDetailsScreen from "../components/RatesDetailsScreen";
 import Copy from "../components/Copy";
 
@@ -27,8 +28,37 @@ class DetailsScreen extends React.Component {
         { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
         { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
       ],
-      activeInterval: 3,
+      activeInterval: 1,
     };
+    this.getDayCount = 32 - new Date(2020, 1, 32).getDate();
+    this.dayCounts = [];
+    for (let i = 1; i <= this.getDayCount; i++) {
+      this.dayCounts.push(i < 10 ? `0${i}` : i);
+    }
+    this.chart = {
+      week: {
+        values: this.getRandom(7),
+        keys: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+      },
+      month: {
+        values: this.getRandom(this.getDayCount),
+        keys: this.dayCounts,
+      },
+      year: {
+        values: this.getRandom(12),
+        keys: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+      },
+    };
+  }
+
+  getRandom(count) {
+    let random = [];
+    for (let i = 0; i < count; i++) {
+      let rand = Math.random() * Math.floor(5);
+          rand = rand.toFixed(1);
+      random.push(Number(rand));
+    }
+    return random;
   }
 
   setActive(index) {
@@ -84,6 +114,17 @@ class DetailsScreen extends React.Component {
                 <Text onPress={() => this.setActive(3)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 3 ? styles.active : null]}>Год</Text>
               </View>
             </View>
+
+            {this.state.activeInterval == 1 &&
+              <BarChartExample data={this.chart.week.values} keys={this.chart.week.keys} />
+            }
+            {this.state.activeInterval == 2 &&
+              <BarChartExample data={this.chart.month.values} keys={this.chart.month.keys} />
+            }
+            {this.state.activeInterval == 3 &&
+              <BarChartExample data={this.chart.year.values} keys={this.chart.year.keys} />
+            }
+
             <Text style={styles.rateBlockTitle}>Рейтинг по категории</Text>
             <View style={styles.tableHead}>
               <Text style={styles.tableHead1}>N</Text>
@@ -175,9 +216,11 @@ const styles = StyleSheet.create({
   },
   rateBlockTitleTab: {
     fontSize: 13,
-    marginTop: 30,
+    marginTop: 25,
     paddingLeft: 15,
     color: '#999',
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   active: {
     color: '#FFC53D',

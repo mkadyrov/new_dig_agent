@@ -14,6 +14,7 @@ class LoginScreen extends React.Component {
     this.state = {
       recover: false,
     };
+    console.log(this.props);
   }
 
   render() {
@@ -28,7 +29,7 @@ class LoginScreen extends React.Component {
               </View>
               <View style={styles.inputsBlock}>
                 <Icon name="ios-mail" style={styles.iconEmail} />
-                <TextInput style={styles.input} />
+                <TextInput style={styles.input} placeholder='Электронная почта' />
               </View>
               <Text style={styles.button} onPress={() => this.setState({recover: false})}>Отправить</Text>
               <Text style={styles.textButton} onPress={() => this.setState({recover: false})}>Войти</Text>
@@ -43,8 +44,8 @@ class LoginScreen extends React.Component {
               <View style={styles.inputsBlock}>
                 <Icon name="ios-mail" style={styles.iconEmail} />
                 <Icon name="ios-lock" style={styles.iconPass} />
-                <TextInput style={styles.input} />
-                <TextInput style={styles.input} />
+                <TextInput style={styles.input} placeholder='Электронная почта' />
+                <TextInput style={styles.input} placeholder='Пароль' />
               </View>
               <Text style={styles.button} onPress={() => this.props.navigation.navigate('Home')}>Войти</Text>
               <Text style={styles.textButton} onPress={() => this.setState({recover: true})}>Забыли пароль?</Text>

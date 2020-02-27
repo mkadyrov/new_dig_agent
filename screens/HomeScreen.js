@@ -7,6 +7,8 @@ import CustomHeader from "../components/CustomHeader";
 import RateHomeBlock from "../components/RateHomeBlock";
 import Copy from "../components/Copy";
 
+import { Icon } from 'native-base';
+
 class HomeScreen extends React.Component {
 
   constructor(props) {
