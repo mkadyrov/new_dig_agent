@@ -25,7 +25,6 @@ class ProfileScreen extends React.Component {
           {name: 'Рахматулла Димаш Еркенулы', tab: 'Р'},
         ],
       },
-      editProfile: false,
       passRecover: false,
     };
   }
@@ -37,58 +36,33 @@ class ProfileScreen extends React.Component {
           <ScrollView>
             <Image style={styles.image} source={require('../assets/images/image.jpg')} />
             <View style={styles.containerScreen}>
-              {!this.state.editProfile &&
-                <View>
-                  <Text style={[styles.label, {marginTop: 0}]}>ФИО</Text>
-                  <View style={[styles.value, {flexDirection: 'row'}]}>
-                    <View style={styles.tab}><Text style={styles.value}>{this.state.user.tab}</Text></View>
-                    <Text style={[styles.value, {marginTop: 5}]}>{this.state.user.name}</Text>
-                  </View>
-                  <Text style={styles.label}>Должность</Text>
-                  <Text style={styles.value}>{this.state.user.position}</Text>
-                  <Text style={styles.label}>Раб. телефон</Text>
-                  <Text style={styles.value}>{this.state.user.phone}</Text>
-                  <Text style={styles.label}>Моб. телефон</Text>
-                  {this.state.user.mobile.map((mob, index2) =>
-                    <Text key={index2} style={styles.value}>{this.state.user.phone}</Text>
-                  )}
-                  <Text style={styles.label}>Электронная почта</Text>
-                  <Text style={styles.value}>{this.state.user.email}</Text>
-                  <Text style={styles.label}>Организация</Text>
-                  <Text style={styles.value}>{this.state.user.company}</Text>
-                  <View style={styles.line}></View>
-                  <Text style={styles.label}>Контактные лица</Text>
-                  {this.state.user.contact.map((contact, index3) =>
-                    <View key={index3} style={[styles.value, {flexDirection: 'row', marginBottom: 10,}]}>
-                      <View style={styles.tab}><Text style={styles.value}>{contact.tab}</Text></View>
-                      <Text style={[styles.value, {marginTop: 5}]}>{contact.name}</Text>
-                    </View>
-                  )}
+              <Text style={[styles.label, {marginTop: 0}]}>ФИО</Text>
+              <View style={[styles.value, {flexDirection: 'row'}]}>
+                <View style={styles.tab}><Text style={styles.value}>{this.state.user.tab}</Text></View>
+                <Text style={[styles.value, {marginTop: 5}]}>{this.state.user.name}</Text>
+              </View>
+              <Text style={styles.label}>Должность</Text>
+              <Text style={styles.value}>{this.state.user.position}</Text>
+              <Text style={styles.label}>Раб. телефон</Text>
+              <Text style={styles.value}>{this.state.user.phone}</Text>
+              <Text style={styles.label}>Моб. телефон</Text>
+              {this.state.user.mobile.map((mob, index2) =>
+                <Text key={index2} style={styles.value}>{this.state.user.phone}</Text>
+              )}
+              <Text style={styles.label}>Электронная почта</Text>
+              <Text style={styles.value}>{this.state.user.email}</Text>
+              <Text style={styles.label}>Организация</Text>
+              <Text style={styles.value}>{this.state.user.company}</Text>
+              <View style={styles.line}></View>
+              <Text style={styles.label}>Контактные лица</Text>
+              {this.state.user.contact.map((contact, index3) =>
+                <View key={index3} style={[styles.value, {flexDirection: 'row', marginBottom: 10,}]}>
+                  <View style={styles.tab}><Text style={styles.value}>{contact.tab}</Text></View>
+                  <Text style={[styles.value, {marginTop: 5}]}>{contact.name}</Text>
                 </View>
-              }
-              {this.state.editProfile &&
-                <View style={styles.inputsBlock}>
-                  <Text style={[styles.label, {marginTop: 0}]}>ФИО</Text>
-                  <TextInput value={this.state.user.name} style={[styles.input, {marginTop: 0, paddingLeft: 15}]}  />
-                  <Text style={[styles.label, {paddingBottom: 0, marginTop: 15}]}>Должность</Text>
-                  <TextInput value={this.state.user.position} style={[styles.input, {marginTop: 10, paddingLeft: 15}]} />
-                  <Text style={[styles.label, {paddingBottom: 0, marginTop: 15}]}>Раб. телефон</Text>
-                  <TextInput value={this.state.user.phone} style={[styles.input, {marginTop: 10, paddingLeft: 15}]} />
-                  <Text style={[styles.label, {paddingBottom: 0, marginTop: 15}]}>Организация</Text>
-                  <TextInput value={this.state.user.company} style={[styles.input, {marginTop: 10, paddingLeft: 15}]} />
-                </View>
-              }
-              {!this.state.editProfile &&
-                <Text style={styles.button} onPress={() => this.setState({editProfile: true, passRecover: false})}>Редактировать профиль</Text>
-              }
-              {this.state.editProfile &&
-                <View>
-                  <Text style={styles.button} onPress={() => this.setState({editProfile: false})}>Сохранить</Text>
-                  <Text style={styles.button} onPress={() => this.setState({editProfile: false})}>Отменить</Text>
-                </View>
-              }
+              )}
               {!this.state.passRecover &&
-                <Text style={styles.button} onPress={() => this.setState({passRecover: true, editProfile: false})}>Сменить пароль</Text>
+                <Text style={styles.button} onPress={() => this.setState({passRecover: true})}>Сменить пароль</Text>
               }
               {this.state.passRecover &&
                 <Text style={styles.button} onPress={() => this.setState({passRecover: false})}>Отменить</Text>
