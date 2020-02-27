@@ -13,13 +13,21 @@ class LoginScreen extends React.Component {
     super(props);
     this.state = {
       recover: false,
+      position: 'center',
     };
-    console.log(this.props);
+  }
+
+  setPostion(bool) {
+    if (bool) {
+      this.setState({position: 'flex-start'});
+    } else {
+      this.setState({position: 'center'});
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {justifyContent: this.state.position}]}>
         <View style={styles.containerScreen}>
           {this.state.recover &&
             <View>
@@ -29,7 +37,7 @@ class LoginScreen extends React.Component {
               </View>
               <View style={styles.inputsBlock}>
                 <Icon name="ios-mail" style={styles.iconEmail} />
-                <TextInput style={styles.input} placeholder='Электронная почта' />
+                <TextInput style={styles.input} onFocus={(e) => this.setPostion(true)} onBlur={(e) => this.setPostion(false)} placeholder='Электронная почта' />
               </View>
               <Text style={styles.button} onPress={() => this.setState({recover: false})}>Отправить</Text>
               <Text style={styles.textButton} onPress={() => this.setState({recover: false})}>Войти</Text>
@@ -44,8 +52,8 @@ class LoginScreen extends React.Component {
               <View style={styles.inputsBlock}>
                 <Icon name="ios-mail" style={styles.iconEmail} />
                 <Icon name="ios-lock" style={styles.iconPass} />
-                <TextInput style={styles.input} placeholder='Электронная почта' />
-                <TextInput style={styles.input} placeholder='Пароль' />
+                <TextInput style={styles.input} onFocus={(e) => this.setPostion(true)} onBlur={(e) => this.setPostion(false)} placeholder='Электронная почта' />
+                <TextInput style={styles.input} onFocus={(e) => this.setPostion(true)} onBlur={(e) => this.setPostion(false)} placeholder='Пароль' />
               </View>
               <Text style={styles.button} onPress={() => this.props.navigation.navigate('Home')}>Войти</Text>
               <Text style={styles.textButton} onPress={() => this.setState({recover: true})}>Забыли пароль?</Text>
@@ -66,7 +74,6 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#F5F5F5',
   },
   containerScreen: {
