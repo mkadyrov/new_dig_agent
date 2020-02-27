@@ -48,7 +48,7 @@ class RateHomeBlock extends React.Component {
         </View>
         <View style={styles.tables}>
           {this.abonents.map((item, index) =>
-            <RateHomeAbonent key={index} navigation={this.props.navigation} abonent={item} type={this.props.type} />
+            <RateHomeAbonent key={index} navigation={this.props.navigation} abonent={item} back='Home' type={this.props.type} />
           )}
         </View>
       </View>

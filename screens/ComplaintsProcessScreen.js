@@ -38,7 +38,7 @@ class ComplaintsProcessScreen extends React.Component {
             </View>
             <View style={styles.tables}>
               {this.state.abonents.map((item, index) =>
-                <RateHomeAbonent key={index} navigation={this.props.navigation} abonent={item} type="2" />
+                <RateHomeAbonent key={index} navigation={this.props.navigation} back='ComplaintsProcessScreen' abonent={item} type="2" />
               )}
             </View>
             <Copy />

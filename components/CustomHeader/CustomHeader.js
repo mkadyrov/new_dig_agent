@@ -3,9 +3,9 @@ import { View, Image, Text } from 'react-native';
 import { Icon } from 'native-base';
 import { Header } from 'react-native-elements';
 import styles from './styles';
+import { NavigationActions } from 'react-navigation';
 
-const CustomHeader = ({ navigation, title }) => {
-  console.log(navigation);
+const CustomHeader = ({ navigation, title, link = 'Home' }) => {
   if (title == '') {
     return (<Header
       containerStyle={[styles.container]}
@@ -15,7 +15,7 @@ const CustomHeader = ({ navigation, title }) => {
   } else {
     return (<Header
       containerStyle={[styles.container]}
-      leftComponent={<Icon name="arrow-back" style={[styles.icon]} onPress={() => navigation.goBack()} />}
+      leftComponent={<Icon name="arrow-back" style={[styles.icon]} onPress={() => navigation.navigate(link)} />}
       centerComponent={<Text style={[styles.text]}>{title}</Text>}
     />);
   }

@@ -19,7 +19,7 @@ import ComplaintsFailedScreen from '../screens/ComplaintsFailedScreen';
 import DrawerContent from './DrawerContent';
 
 const Drawer = createDrawerNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = 'Login';
 
 export default function SideBarNavigator({ navigation, route }) {
 
