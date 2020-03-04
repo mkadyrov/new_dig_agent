@@ -89,7 +89,7 @@ class AbonentComplaintProcessScreen extends React.Component {
             <Text style={styles.label}>Фотография</Text>
             <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
             <Copy />
-          </View>    
+          </View>
         </ScrollView>
       </View>
     );

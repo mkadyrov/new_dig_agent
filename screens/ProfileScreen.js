@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, Button, View, Text, Image, ScrollView, TextInput} from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView, TextInput } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -12,75 +12,160 @@ class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        name: 'Алиев Арсен Калимулдаевич',
-        tab: 'A',
-        position: 'Руководитель отдела',
-        phone: '+7 747 345 23 14',
-        mobile: ['+7 747 345 23 14', '+7 747 345 23 14'],
-        email: 'a.aliyev@gmail.com',
-        company: 'Отделение №3, ЦОН Бостандыкского района, г.Алматы',
-        contact: [
-          {name: 'Досаев Серик Бахытович', tab: 'Д'},
-          {name: 'Рахматулла Димаш Еркенулы', tab: 'Р'},
-        ],
-      },
       passRecover: false,
+      statusLoad: false,
+      block: false,
+      success: false,
+      successFalse: false,
+      successNotTrue: false,
+      newPassword: '',
+      confirmPassword: '',
     };
+    this.data = {};
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch("http://188.166.223.192:6000/api/admin/profile",
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': value,
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.data = result;
+            this.setState({statusLoad: true});
+          },
+          (error) => {}
+        );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
+    });
+  }
+
+  setPassword() {
+    if (this.state.newPassword !== '' && this.state.confirmPassword !== '') {
+      this.setState({success: false, successFalse: false, successNotTrue: false, block: true});
+      if (this.state.newPassword === this.state.confirmPassword) {
+        fetch("http://188.166.223.192:6000/api/profile/password",
+          {
+            method: 'PUT',
+            body: JSON.stringify({email: this.state.newPassword}),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({success: true, successFalse: false, successNotTrue: false});
+          },
+          (error) => {
+            this.setState({success: false, successFalse: true, successNotTrue: false});
+          }
+        );
+      } else {
+        this.setState({success: false, successFalse: false, successNotTrue: true});
+      }
+    }
+  }
+
+  reset() {
+    this.setState({success: false, successFalse: false, successNotTrue: false, block: false});
   }
 
   render() {
     return (
         <View style={styles.container}>
           <CustomHeader navigation={this.props.navigation} title="Профиль" />
-          <ScrollView>
-            <Image style={styles.image} source={require('../assets/images/image.jpg')} />
-            <View style={styles.containerScreen}>
-              <Text style={[styles.label, {marginTop: 0}]}>ФИО</Text>
-              <View style={[styles.value, {flexDirection: 'row'}]}>
-                <View style={styles.tab}><Text style={styles.value}>{this.state.user.tab}</Text></View>
-                <Text style={[styles.value, {marginTop: 5}]}>{this.state.user.name}</Text>
+          {this.state.statusLoad &&
+            <ScrollView>
+              <Image style={styles.image} source={require('../assets/images/image.jpg')} />
+              <View style={styles.containerScreen}>
+                <Text style={[styles.label, {marginTop: 0}]}>ФИО</Text>
+                <View style={[styles.value, {flexDirection: 'row'}]}>
+                  <View style={styles.tab}><Text style={styles.value}>{this.data.user.name.slice(0,1)}</Text></View>
+                  <Text style={[styles.value, {marginTop: 5}]}>{this.data.user.name}</Text>
+                </View>
+                <Text style={styles.label}>Должность</Text>
+                <Text style={styles.value}>{this.data.user.position}</Text>
+                <Text style={styles.label}>Раб. телефон</Text>
+                <Text style={styles.value}>{this.data.user.phone.work}</Text>
+                <Text style={styles.label}>Моб. телефон</Text>
+                {this.data.user.phone.mobile.map((mob, index2) =>
+                  <Text key={index2} style={styles.value}>{mob}</Text>
+                )}
+                <Text style={styles.label}>Электронная почта</Text>
+                <Text style={styles.value}>{this.data.user.email}</Text>
+                <Text style={styles.label}>Организация</Text>
+                <Text style={styles.value}>{this.data.user.organization.nameRu}</Text>
+                {this.data.contactPersons &&
+                  <View>
+                    <View style={styles.line}></View>
+                    <Text style={styles.label}>Контактные лица</Text>
+                    {this.data.contactPersons.map((contact, index3) => {
+                      if (contact.name) {
+                        return (
+                        <View key={index3} style={[styles.value, {flexDirection: 'row', marginBottom: 10,}]}>
+                          <View style={styles.tab}><Text style={styles.value}>{contact.name.slice(0,1)}</Text></View>
+                          <Text style={[styles.value, {marginTop: 5}]}>{contact.name}</Text>
+                        </View>
+                        );
+                      }
+                    })}
+                  </View>
+                }
+                {!this.state.passRecover &&
+                  <Text style={styles.button} onPress={() => this.setState({passRecover: true})}>Сменить пароль</Text>
+                }
+                {this.state.passRecover &&
+                  <Text style={styles.button} onPress={() => this.setState({passRecover: false})}>Отменить</Text>
+                }
+                {this.state.passRecover &&
+                  <View style={styles.inputsBlock}>
+                    <Icon name="ios-lock" style={[styles.iconPass, {top: 30}]} />
+                    <Icon name="ios-lock" style={[styles.iconPass, {top: 95}]} />
+                    <TextInput onChange={(e) => this.setState({newPassword: e.nativeEvent.text})} value={this.state.newPassword} style={styles.input} placeholder='Новый пароль' />
+                    <TextInput onChange={(e) => this.setState({confirmPassword: e.nativeEvent.text})} value={this.state.confirmPassword} style={styles.input} placeholder='Повторите новый пароль' />
+                    <Text style={styles.button} onPress={() => this.setPassword()}>Сохранить</Text>
+                  </View>
+                }
+                <Copy />
               </View>
-              <Text style={styles.label}>Должность</Text>
-              <Text style={styles.value}>{this.state.user.position}</Text>
-              <Text style={styles.label}>Раб. телефон</Text>
-              <Text style={styles.value}>{this.state.user.phone}</Text>
-              <Text style={styles.label}>Моб. телефон</Text>
-              {this.state.user.mobile.map((mob, index2) =>
-                <Text key={index2} style={styles.value}>{this.state.user.phone}</Text>
-              )}
-              <Text style={styles.label}>Электронная почта</Text>
-              <Text style={styles.value}>{this.state.user.email}</Text>
-              <Text style={styles.label}>Организация</Text>
-              <Text style={styles.value}>{this.state.user.company}</Text>
-              <View style={styles.line}></View>
-              <Text style={styles.label}>Контактные лица</Text>
-              {this.state.user.contact.map((contact, index3) =>
-                <View key={index3} style={[styles.value, {flexDirection: 'row', marginBottom: 10,}]}>
-                  <View style={styles.tab}><Text style={styles.value}>{contact.tab}</Text></View>
-                  <Text style={[styles.value, {marginTop: 5}]}>{contact.name}</Text>
-                </View>
-              )}
-              {!this.state.passRecover &&
-                <Text style={styles.button} onPress={() => this.setState({passRecover: true})}>Сменить пароль</Text>
+            </ScrollView>
+          }
+          {this.state.block === true &&
+            <View style={styles.block}>
+              {this.state.success === false && this.state.successFalse === false && this.state.successNotTrue === false &&
+                <Image style={{ width: 80, height: 45, }} source={require('../assets/images/Pulse.gif')} />
               }
-              {this.state.passRecover &&
-                <Text style={styles.button} onPress={() => this.setState({passRecover: false})}>Отменить</Text>
-              }
-              {this.state.passRecover &&
-                <View style={styles.inputsBlock}>
-                  <Icon name="ios-lock" style={[styles.iconPass, {top: 30}]} />
-                  <Icon name="ios-lock" style={[styles.iconPass, {top: 95}]} />
-                  <Icon name="ios-lock" style={[styles.iconPass, {top: 160}]} />
-                  <TextInput style={styles.input} placeholder='Старый пароль' />
-                  <TextInput style={styles.input} placeholder='Новый пароль' />
-                  <TextInput style={styles.input} placeholder='Повторите новый пароль' />
-                  <Text style={styles.button} onPress={() => this.setState({passRecover: false})}>Сохранить</Text>
+              {this.state.success === true &&
+                <View style={styles.success}>
+                  <Text style={styles.successText}>Пароль изменен</Text>
+                  <Text style={styles.button} onPress={() => this.reset(false)}>Закрыть</Text>
                 </View>
               }
-              <Copy />
+              {this.state.successFalse === true &&
+                <View style={styles.success}>
+                  <Text style={styles.successText}>Извините, произошла ошибка</Text>
+                  <Text style={styles.button} onPress={() => this.reset(true)}>Закрыть</Text>
+                </View>
+              }
+              {this.state.successNotTrue === true &&
+                <View style={styles.success}>
+                  <Text style={styles.successText}>Пароли не совпадают</Text>
+                  <Text style={styles.button} onPress={() => this.reset(true)}>Закрыть</Text>
+                </View>
+              }
             </View>
-          </ScrollView>
+          }
         </View>
     );
   }
@@ -158,4 +243,24 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     fontSize: 15,
   },
+  block: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    backgroundColor: 'rgba(245, 245, 245, 0.95)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+    padding: 20,
+  },
+  success: {
+    width: '100%',
+  },
+  successText: {
+    width: '100%',
+    textAlign: 'center',
+  }
 });

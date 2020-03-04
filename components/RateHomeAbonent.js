@@ -9,27 +9,23 @@ class RateHomeAbonent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    console.log(this.props);
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.phone} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.abonent.phone}</Text>
+        <Text style={styles.phone} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.data.ContactPerson.phone.work}</Text>
         <View style={styles.rates}>
-          <Image style={styles.star} source={this.props.abonent.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.abonent.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.abonent.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.abonent.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.abonent.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.data.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.data.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.data.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.data.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          <Image style={styles.star} source={this.props.data.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
         </View>
         <View style={styles.time}>
-          {this.props.type == 1 &&
-            <Text style={styles.tabTime} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.abonent.time}</Text>
-          }
           {this.props.type != 1 &&
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.abonent.tab}</Text>
+              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.data.tab}</Text>
             </View>
           }
         </View>

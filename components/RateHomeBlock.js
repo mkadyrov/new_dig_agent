@@ -10,12 +10,6 @@ class RateHomeBlock extends React.Component {
    constructor(props) {
      super(props);
      this.state = {};
-     this.abonents = [
-      { phone: '7702 430 2021', rate: 1.5, time: '01:34', tab: 'A' },
-      { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'Д' },
-      { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'Р' },
-      { phone: '7702 430 2021', rate: 4.5, time: '01:34', tab: 'A' },
-    ];
    }
 
    render() {
@@ -23,17 +17,11 @@ class RateHomeBlock extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.title}>
-            {this.props.type == 1 &&
-              <Image style={{ width: 25, height: 20, }} source={require('../assets/images/1.png')} />
-            }
             {this.props.type == 2 &&
               <Image style={{ width: 30, height: 25, }} source={require('../assets/images/2.png')} />
             }
             {this.props.type == 3 &&
               <Image style={{ width: 30, height: 25, }} source={require('../assets/images/3.png')} />
-            }
-            {this.props.type == 4 &&
-              <Image style={{ width: 30, height: 25, }} source={require('../assets/images/4.png')} />
             }
             <Text style={styles.titleText}>{this.props.title}</Text>
           </View>
@@ -47,9 +35,13 @@ class RateHomeBlock extends React.Component {
           }
         </View>
         <View style={styles.tables}>
-          {this.abonents.map((item, index) =>
-            <RateHomeAbonent key={index} navigation={this.props.navigation} abonent={item} link={this.props.sublink} type={this.props.type} />
-          )}
+          {this.props.data.map((item, index) => {
+            if (item.ContactPerson.phone) {
+              if (item.ContactPerson.phone.work) {
+                return (<RateHomeAbonent key={index} navigation={this.props.navigation} data={item} link={this.props.sublink} type={this.props.type} />);
+              }
+            }
+          })}
         </View>
       </View>
     );

@@ -11,15 +11,11 @@ import ProfileScreen from '../screens/ProfileScreen';
 import HelpScreen from '../screens/HelpScreen';
 import LoginScreen from '../screens/LoginScreen';
 
-import ComplaintsNewScreen from '../screens/ComplaintsNewScreen';
 import ComplaintsProcessScreen from '../screens/ComplaintsProcessScreen';
 import ComplaintsProcessedScreen from '../screens/ComplaintsProcessedScreen';
-import ComplaintsFailedScreen from '../screens/ComplaintsFailedScreen';
 
-import AbonentComplaintNewScreen from '../screens/AbonentComplaintNewScreen';
 import AbonentComplaintProcessScreen from '../screens/AbonentComplaintProcessScreen';
 import AbonentComplaintProcessedScreen from '../screens/AbonentComplaintProcessedScreen';
-import AbonentComplaintFailedScreen from '../screens/AbonentComplaintFailedScreen';
 
 import DrawerContent from './DrawerContent';
 
@@ -93,14 +89,6 @@ export default function SideBarNavigator({ navigation, route }) {
                 }}
             />
 
-            <Drawer.Screen
-                name="ComplaintsNewScreen"
-                component={ComplaintsNewScreen}
-                options={{
-                    title: 'Новые жалобы',
-                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-                }}
-            />
 
             <Drawer.Screen
                 name="ComplaintsProcessScreen"
@@ -116,15 +104,6 @@ export default function SideBarNavigator({ navigation, route }) {
                 component={ComplaintsProcessedScreen}
                 options={{
                     title: 'Обработанные',
-                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-                }}
-            />
-
-            <Drawer.Screen
-                name="AbonentComplaintNewScreen"
-                component={AbonentComplaintNewScreen}
-                options={{
-                    title: 'Новая жалоба',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />
@@ -147,14 +126,6 @@ export default function SideBarNavigator({ navigation, route }) {
                 }}
             />
 
-            <Drawer.Screen
-                name="AbonentComplaintFailedScreen"
-                component={AbonentComplaintFailedScreen}
-                options={{
-                    title: 'Проваленная жалоба',
-                    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-                }}
-            />
         </Drawer.Navigator>
     );
 }

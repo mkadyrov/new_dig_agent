@@ -14,41 +14,76 @@ class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      company: { name: 'Отделение №3, ЦОН Бостандыкского района, г.Алматы', rate: 3.5, },
-      rates: [
-        {rate: 5, counts: 34},
-        {rate: 4, counts: 1},
-        {rate: 3, counts: 100},
-        {rate: 2, counts: 2},
-        {rate: 1, counts: 50},
-      ],
-      counts: 241,
-      items: [
-        { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
-        { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
-        { name: 'Отделение №8 Цон Сарыаркинского района', rate: 3.5, },
-      ],
-      activeInterval: 1,
+      statusLoad: false,
     };
-    this.getDayCount = 32 - new Date(2020, 1, 32).getDate();
-    this.dayCounts = [];
-    for (let i = 1; i <= this.getDayCount; i++) {
-      this.dayCounts.push(i < 10 ? `0${i}` : i);
-    }
     this.chart = {
       week: {
-        values: this.getRandom(7),
-        keys: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+        values: [],
+        keys: [],
       },
       month: {
-        values: this.getRandom(this.getDayCount),
-        keys: this.dayCounts,
+        values: [],
+        keys: [],
       },
       year: {
-        values: this.getRandom(12),
-        keys: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+        values: [],
+        keys: [],
       },
+      months: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
     };
+    this.data = {
+     "rate": 3.4444444444444446,
+     "totalReviews": 128,
+     "ratesCountByGroup": {
+     "1": 3,
+     "3": 1,
+     "4": 7,
+     "5": 117
+     },
+     "avgRatingsPerTimeInterval": {
+     "weeklyRating": {},
+     "monthlyRating": {
+     "17": 5,
+     "18": 4,
+     "05": 5,
+     "06": 5,
+     "07": 5
+     },
+     "yearlyRating": {
+     "12": 5,
+     "02": 4.955555555555556,
+     "01": 4.728571428571429
+     }
+     },
+     "topServiceProviders": [
+     {
+     "_id": "5de7b9316234fc078cc497f6",
+     "nameKz": "Service Provider3",
+     "nameRu": "Service Provider3",
+     "rate": 3.4444444444444446
+     },
+     {
+     "_id": "5dee2e987092c71a1c13960e",
+     "nameKz": "Алатау ауданының акиматы",
+     "nameRu": "Акимат Алатауского района",
+     "rate": 0
+     },
+     {
+     "_id": "5e197fb65bcb0c155c18f9b5",
+     "nameKz": "йкпкп",
+     "nameRu": "цікці",
+     "rate": 0
+     }
+     ]
+    };
+    Object.keys(this.data.avgRatingsPerTimeInterval.monthlyRating).map((item) => {
+      this.chart.month.keys.push(item);
+      this.chart.month.values.push(Number(this.data.avgRatingsPerTimeInterval.monthlyRating[`${item}`].toFixed(1)));
+    });
+    Object.keys(this.data.avgRatingsPerTimeInterval.yearlyRating).map((item) => {
+      this.chart.year.keys.push(this.chart.months[Number(item) - 1]);
+      this.chart.year.values.push(Number(this.data.avgRatingsPerTimeInterval.yearlyRating[`${item}`].toFixed(1)));
+    });
   }
 
   getRandom(count) {
@@ -69,81 +104,89 @@ class DetailsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <CustomHeader navigation={this.props.navigation} title="Рейтинг" />
-        <ScrollView>
-          <View style={styles.containerScreen}>
-            <Text style={styles.topTitle}>Рейтинг услугодателя</Text>
-            <Text style={styles.topTitleText}>
-              Отображение статистики услугодателя, в разрезе недели, месяца по сравнению с другими услугодателями и личный рейтинг.
-            </Text>
-            <View style={styles.ratesCont}>
-              <View style={styles.rateBlock}>
-                <Text style={styles.rateBlockTitleL}>Текущий рейтинг</Text>
+        {this.state.statusLoad &&
+          <ScrollView>
+            <View style={styles.containerScreen}>
+              <Text style={styles.topTitle}>Рейтинг услугодателя</Text>
+              <Text style={styles.topTitleText}>
+                Отображение статистики услугодателя, в разрезе недели, месяца по сравнению с другими услугодателями и личный рейтинг.
+              </Text>
+              <View style={styles.ratesCont}>
+                <View style={styles.rateBlock}>
+                  <Text style={styles.rateBlockTitleL}>Текущий рейтинг</Text>
+                </View>
+                <View style={styles.rateBlockR}>
+                  <Text style={styles.rateBlockTitleR}>Оценки</Text>
+                </View>
               </View>
-              <View style={styles.rateBlockR}>
-                <Text style={styles.rateBlockTitleR}>Оценки</Text>
-              </View>
-            </View>
-            <View style={styles.ratesContBlock}>
-              <View style={styles.rateBlock}>
-                <Text style={styles.rate}>{this.state.company.rate}</Text>
-                <View style={styles.ratesBlock}>
-                  <View style={styles.rates}>
-                    <Image style={styles.star} source={this.state.company.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                    <Image style={styles.star} source={this.state.company.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                    <Image style={styles.star} source={this.state.company.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                    <Image style={styles.star} source={this.state.company.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                    <Image style={styles.star} source={this.state.company.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <View style={styles.ratesContBlock}>
+                <View style={styles.rateBlock}>
+                  <Text style={styles.rate}>{this.data.rate.toFixed(1)}</Text>
+                  <View style={styles.ratesBlock}>
+                    <View style={styles.rates}>
+                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                    </View>
+                  </View>
+                  <View style={styles.rateCounts}>
+                    <Icon name="people" style={styles.rateIcon} />
+                    <Text style={styles.rateCountsText}>{this.data.totalReviews} оценили</Text>
                   </View>
                 </View>
-                <View style={styles.rateCounts}>
-                  <Icon name="people" style={styles.rateIcon} />
-                  <Text style={styles.rateCountsText}>{this.state.counts} оценили</Text>
+                <View style={styles.rateBlockR}>
+                  {Object.keys(this.data.ratesCountByGroup).map((item, index) =>
+                    <RatesDetailsScreen key={index} name={item} val={this.data.ratesCountByGroup[`${item}`]} counts={this.data.totalReviews} />
+                  )}
                 </View>
               </View>
-              <View style={styles.rateBlockR}>
-                {this.state.rates.map((item, index) =>
-                  <RatesDetailsScreen key={index} rate={item} counts={this.state.counts} />
-                )}
-              </View>
-            </View>
-            <View style={styles.rateBlockTitleSelect}>
-              <Text style={[styles.rateBlockTitle, {width: '30%'}]}>Рейтинг за</Text>
-              <View style={styles.rateBlockTitleTabs}>
-                <Text onPress={() => this.setActive(1)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 1 ? styles.active : null]}>Неделю</Text>
-                <Text onPress={() => this.setActive(2)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 2 ? styles.active : null]}>Месяц</Text>
-                <Text onPress={() => this.setActive(3)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 3 ? styles.active : null]}>Год</Text>
-              </View>
-            </View>
-
-            {this.state.activeInterval == 1 &&
-              <BarChartExample data={this.chart.week.values} keys={this.chart.week.keys} />
-            }
-            {this.state.activeInterval == 2 &&
-              <BarChartExample data={this.chart.month.values} keys={this.chart.month.keys} />
-            }
-            {this.state.activeInterval == 3 &&
-              <BarChartExample data={this.chart.year.values} keys={this.chart.year.keys} />
-            }
-
-            <Text style={styles.rateBlockTitle}>Рейтинг по категории</Text>
-            <View style={styles.tableHead}>
-              <Text style={styles.tableHead1}>N</Text>
-              <Text style={styles.tableHead2}>Услугодатель</Text>
-              <Text style={styles.tableHead3}>Рейтинг</Text>
-            </View>
-            {this.state.items.map((item, index) =>
-              <View key={index} style={styles.tableRow}>
-                <Text style={styles.tableRow1}>{index + 1}</Text>
-                <Text style={styles.tableRow2}>{item.name}</Text>
-                <View style={styles.tableRow3}>
-                  <Image style={styles.starRow} source={require('../assets/images/star.png')} />
-                  <Text style={styles.tableRow2Text}>{item.rate}</Text>
+              <View style={styles.rateBlockTitleSelect}>
+                <Text style={[styles.rateBlockTitle, {width: '30%'}]}>Рейтинг за</Text>
+                <View style={styles.rateBlockTitleTabs}>
+                  {Object.keys(this.data.avgRatingsPerTimeInterval.weeklyRating).length > 0 &&
+                    <Text onPress={() => this.setActive(1)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 1 ? styles.active : null]}>Неделю</Text>
+                  }
+                  {Object.keys(this.data.avgRatingsPerTimeInterval.monthlyRating).length > 0 &&
+                    <Text onPress={() => this.setActive(2)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 2 ? styles.active : null]}>Месяц</Text>
+                  }
+                  {Object.keys(this.data.avgRatingsPerTimeInterval.yearlyRating).length > 0 &&
+                    <Text onPress={() => this.setActive(3)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 3 ? styles.active : null]}>Год</Text>
+                  }
                 </View>
               </View>
-            )}
-            <Copy />
-          </View>
-        </ScrollView>
+
+              {this.state.activeInterval == 1 && Object.keys(this.data.avgRatingsPerTimeInterval.weeklyRating).length > 0 &&
+                <BarChartExample data={this.chart.week.values} keys={this.chart.week.keys} />
+              }
+              {this.state.activeInterval == 2 &&
+                <BarChartExample data={this.chart.month.values} keys={this.chart.month.keys} />
+              }
+              {this.state.activeInterval == 3 &&
+                <BarChartExample data={this.chart.year.values} keys={this.chart.year.keys} />
+              }
+
+              <Text style={styles.rateBlockTitle}>Рейтинг по категории</Text>
+              <View style={styles.tableHead}>
+                <Text style={styles.tableHead1}>N</Text>
+                <Text style={styles.tableHead2}>Услугодатель</Text>
+                <Text style={styles.tableHead3}>Рейтинг</Text>
+              </View>
+              {this.data.topServiceProviders.map((item, index) =>
+                <View key={index} style={styles.tableRow}>
+                  <Text style={styles.tableRow1}>{index + 1}</Text>
+                  <Text style={styles.tableRow2}>{item.nameRu}</Text>
+                  <View style={styles.tableRow3}>
+                    <Image style={styles.starRow} source={require('../assets/images/star.png')} />
+                    <Text style={styles.tableRow2Text}>{item.rate.toFixed(1)}</Text>
+                  </View>
+                </View>
+              )}
+              <Copy />
+            </View>
+          </ScrollView>
+        }
       </View>
     );
   };

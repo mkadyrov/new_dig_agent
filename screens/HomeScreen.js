@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {StyleSheet, Button, View, Text, Image, ScrollView} from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
 //import Text from "react-native-web/src/exports/Text";
 import RateHomeBlock from "../components/RateHomeBlock";
 import Copy from "../components/Copy";
+var base64 = require('base-64');
 
 import { Icon } from 'native-base';
 
@@ -14,78 +15,87 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { name: 'Арсен Калимулдаевич' },
-      company: { name: 'Отделение №3, ЦОН Бостандыкского района, г.Алматы', rate: 3.5, },
+      statusLoad: false,
     };
+    this.data = {};
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch("http://188.166.223.192:6000/api/admin",
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': value,
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.data = result;
+            this.setState({statusLoad: true});
+          },
+          (error) => {}
+        );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
+    });
   }
 
   render() {
     return (
         <View style={styles.container}>
           <CustomHeader navigation={this.props.navigation} title="" />
-          <ScrollView>
-            <View style={styles.containerScreen}>
-              <Text style={[styles.topTitle, {paddingBottom: 0}]}>Добро пожаловать</Text>
-              <Text style={[styles.topTitle, {fontSize: 19}]}>{this.state.user.name}!</Text>
-              <View style={styles.companyRate}>
-                <Text style={styles.nameCompany}>{this.state.company.name}</Text>
-                <View style={styles.companyRateCont}>
-                  <View style={styles.companyRateBlock}>
-                    <Image style={styles.companyImg} source={require('../assets/images/star.png')} />
-                    <Text style={styles.companyRateText}>{this.state.company.rate}</Text>
-                  </View>
-                  <View style={styles.companyRateBlock}>
-                    <Text style={styles.companyRateLink} onPress={() => this.props.navigation.navigate('Details')}>Подробнее</Text>
+          {this.state.statusLoad &&
+            <ScrollView>
+              <View style={styles.containerScreen}>
+                <Text style={[styles.topTitle, {paddingBottom: 0}]}>Добро пожаловать</Text>
+                <Text style={[styles.topTitle, {fontSize: 19}]}>{this.data.userName}!</Text>
+                <View style={styles.companyRate}>
+                  <Text style={styles.nameCompany}>{this.data.serviceProvider.nameRu}</Text>
+                  <View style={styles.companyRateCont}>
+                    <View style={styles.companyRateBlock}>
+                      <Image style={styles.companyImg} source={require('../assets/images/star.png')} />
+                      <Text style={styles.companyRateText}>{this.data.serviceProvider.rate.toFixed(1)}</Text>
+                    </View>
+                    <View style={styles.companyRateBlock}>
+                      <Text style={styles.companyRateLink} onPress={() => this.props.navigation.navigate('Details')}>Подробнее</Text>
+                    </View>
                   </View>
                 </View>
+                <View style={styles.complaintCont}>
+                  <View style={styles.complaintBlockL}>
+                    <View style={styles.complaintBlock}>
+                      <Text style={styles.complaintText}>В процессе</Text>
+                      <View style={styles.complaintCounts}>
+                        <Image style={{ width: 30, height: 25, }} source={require('../assets/images/2.png')} />
+                        <Text style={styles.complaintCount}>{this.data.total.inProcess}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.complaintBlockR}>
+                    <View style={styles.complaintBlock}>
+                      <Text style={styles.complaintText}>Обработано</Text>
+                      <View style={styles.complaintCounts}>
+                        <Image style={{ width: 30, height: 25, }} source={require('../assets/images/3.png')} />
+                        <Text style={styles.complaintCount}>{this.data.total.resolved}</Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                {this.data.reviews.inProcessReviews.length > 0 &&
+                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="В процессе" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
+                }
+                {this.data.reviews.resolvedReviews.length > 0 &&
+                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.resolvedReviews} title="Обработанные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
+                }
+                <Copy />
               </View>
-              <View style={styles.complaintCont}>
-                <View style={styles.complaintBlockL}>
-                  <View style={styles.complaintBlock}>
-                    <Text style={styles.complaintText}>Новые</Text>
-                    <View style={styles.complaintCounts}>
-                      <Image style={{ width: 30, height: 25, }} source={require('../assets/images/1.png')} />
-                      <Text style={styles.complaintCount}>12</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.complaintBlockR}>
-                  <View style={styles.complaintBlock}>
-                    <Text style={styles.complaintText}>В процессе</Text>
-                    <View style={styles.complaintCounts}>
-                      <Image style={{ width: 30, height: 25, }} source={require('../assets/images/2.png')} />
-                      <Text style={styles.complaintCount}>5</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.complaintCont}>
-                <View style={styles.complaintBlockL}>
-                  <View style={styles.complaintBlock}>
-                    <Text style={styles.complaintText}>Обработано</Text>
-                    <View style={styles.complaintCounts}>
-                      <Image style={{ width: 30, height: 25, }} source={require('../assets/images/3.png')} />
-                      <Text style={styles.complaintCount}>58</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.complaintBlockR}>
-                  <View style={styles.complaintBlock}>
-                    <Text style={styles.complaintText}>Провалено</Text>
-                    <View style={styles.complaintCounts}>
-                      <Image style={{ width: 30, height: 25, }} source={require('../assets/images/4.png')} />
-                      <Text style={styles.complaintCount}>16</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <RateHomeBlock navigation={this.props.navigation} title="Новые жалобы" type="1" link="ComplaintsNewScreen" sublink="AbonentComplaintNewScreen" />
-              <RateHomeBlock navigation={this.props.navigation} title="В процессе" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
-              <RateHomeBlock navigation={this.props.navigation} title="Обработанные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
-              <RateHomeBlock navigation={this.props.navigation} title="Проваленные" type="4" link="ComplaintsFailedScreen" sublink="AbonentComplaintFailedScreen" />
-              <Copy />
-            </View>
-          </ScrollView>
+            </ScrollView>
+          }
         </View>
     );
   }
