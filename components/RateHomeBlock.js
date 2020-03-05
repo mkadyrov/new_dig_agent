@@ -36,8 +36,8 @@ class RateHomeBlock extends React.Component {
         </View>
         <View style={styles.tables}>
           {this.props.data.map((item, index) => {
-            if (item.ContactPerson.phone) {
-              if (item.ContactPerson.phone.work) {
+            if (item.User.phone && item.ContactPerson.name) {
+              if (item.User.phone.work && item.ContactPerson.name !== '') {
                 return (<RateHomeAbonent key={index} navigation={this.props.navigation} data={item} link={this.props.sublink} type={this.props.type} />);
               }
             }

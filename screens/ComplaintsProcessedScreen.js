@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -12,57 +12,100 @@ class ComplaintsProcessedScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        {
-          name: 'Досаев Серик',
-          tab: 'Д',
-          abonents: [
-            { phone: '7702 430 2021', rate: 1.5, time: '01:34', tab: 'A' },
-            { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'A' },
-            { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'A' },
-            { phone: '7702 430 2021', rate: 4.4, time: '01:34', tab: 'A' },
-          ],
-        },
-        {
-          name: 'Досаев Серик',
-          tab: 'Д',
-          abonents: [
-            { phone: '7702 430 2021', rate: 1.5, time: '01:34', tab: 'A' },
-            { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'A' },
-            { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'A' },
-            { phone: '7702 430 2021', rate: 4.4, time: '01:34', tab: 'A' },
-          ],
-        },
-      ],
+      statusLoad: false,
+      countsUser: [],
     };
+    this.data = [];
+    this.users = [];
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch("http://188.166.223.192:6000/api/admin/reviews?status=inProcess&page=1",
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': value,
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.data = result;
+            result.reviews.forEach((item) => {
+              if (this.users.indexOf(item.Operator._id) === -1) {
+                this.users.push(item.Operator._id);
+              }
+            });
+            this.setState({statusLoad: true});
+          },
+          (error) => {}
+        );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
+    });
   }
 
   render() {
     return (
       <View style={styles.container}>
         <CustomHeader navigation={this.props.navigation} title="Обработанные" />
+        {this.state.statusLoad &&
         <ScrollView>
           <View style={styles.containerScreen}>
             <Text style={styles.topTitle}>
               <Image style={{ width: 25, height: 20, }} source={require('../assets/images/3.png')} /> Обработанные
             </Text>
             <Text style={styles.topTitleText}>Список обработанных жалоб от абонента, с разделением на сотрудников, которые их обработали.</Text>
-            {this.state.items.map((item, index) =>
+            {this.users.map((user, index) =>
               <View key={index} style={styles.row}>
-                <Text style={[styles.label, {marginTop: 0}]}>Сотрудник</Text>
-                <View style={[styles.value, {flexDirection: 'row'}]}>
-                  <View style={styles.tab}><Text style={styles.value}>{item.tab}</Text></View>
-                  <Text style={[styles.value, {marginTop: 5}]}>{item.name}</Text>
-                </View>
+                {this.data.reviews.map((item, index) => {
+                  if (item.Operator._id === user && item.Operator.name && this.state.countsUser.indexOf(item.Operator._id) === -1) {
+                    this.state.countsUser.push(item.Operator._id);
+                    return (
+                      <View>
+                        <Text style={[styles.label, {marginTop: 0}]}>Сотрудник</Text>
+                        <View style={[styles.value, {flexDirection: 'row'}]}>
+                          <View style={styles.tab1}>
+                            <Text style={styles.value}>{item.Operator.name.slice(0, 1)}</Text>
+                          </View>
+                          <Text style={[styles.value, {marginTop: 5}]}>{item.Operator.name}</Text>
+                        </View>
+                      </View>
+                    );
+                  }
+                })}
                 <View style={styles.tableHead}>
                   <Text style={styles.tableHead1}>Абонент</Text>
                   <Text style={styles.tableHead2}>Рейтинг</Text>
-                  <Text style={styles.tableHead3}>Время</Text>
                 </View>
                 <View style={styles.tables}>
-                  {item.abonents.map((item2, index2) =>
-                    <RateHomeAbonent key={index2} navigation={this.props.navigation} link='AbonentComplaintProcessedScreen' abonent={item2} type="3" />
-                  )}
+                  {this.data.reviews.map((item, index) => {
+                    if (item.Operator._id === user && item.Operator.name) {
+                      return (
+                        <View key={index} style={styles.abonentCont}>
+                          <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.User.phone.work}</Text>
+                          <View style={styles.rates}>
+                            <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                            <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                            <Image style={styles.star} source={item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                            <Image style={styles.star} source={item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                            <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                          </View>
+                          <View style={styles.time}>
+                            {this.props.type != 1 &&
+                              <View style={styles.tab}>
+                                <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.Operator.name.slice(0, 1)}</Text>
+                              </View>
+                            }
+                          </View>
+                        </View>
+                      );
+                    }
+                  })}
                 </View>
               </View>
             )}
@@ -71,6 +114,7 @@ class ComplaintsProcessedScreen extends React.Component {
             </View>
           </View>
         </ScrollView>
+        }
       </View>
     );
   }
@@ -108,7 +152,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
-  tab: {
+  tab1: {
     backgroundColor: '#E8E8E8',
     borderRadius: 40,
     width: 40,
@@ -145,5 +189,57 @@ const styles = StyleSheet.create({
   },
   tables: {
     width: '100%',
+  },
+
+  abonentCont: {
+    width: '100%',
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#DDD',
+    marginTop: 15,
+    flexDirection: 'row',
+    padding: 10,
+  },
+  phone: {
+    width: '45%',
+    height: 30,
+    fontSize: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 3,
+  },
+  rates: {
+    width: '40%',
+    height: 30,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  star: {
+    width: 15,
+    height: 15,
+    marginRight: 5,
+    marginTop: -1,
+  },
+  time: {
+    width: '15%',
+    textAlign: 'right',
+    alignItems: 'flex-end',
+  },
+  tabTime: {
+    paddingTop: 3,
+    fontSize: 12,
+  },
+  tab: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    backgroundColor: '#E8E8E8',
+    paddingTop: 3,
+  },
+  tabText: {
+    width: '100%',
+    textAlign: 'center',
+    fontSize: 12,
   }
 });

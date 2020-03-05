@@ -89,8 +89,8 @@ class HomeScreen extends React.Component {
                 {this.data.reviews.inProcessReviews.length > 0 &&
                   <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="В процессе" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
                 }
-                {this.data.reviews.resolvedReviews.length > 0 &&
-                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.resolvedReviews} title="Обработанные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
+                {this.data.reviews.inProcessReviews.length > 0 &&
+                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Обработанные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
                 }
                 <Copy />
               </View>

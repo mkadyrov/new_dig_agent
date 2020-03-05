@@ -14,7 +14,7 @@ class RateHomeAbonent extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.phone} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.data.ContactPerson.phone.work}</Text>
+        <Text style={styles.phone} onPress={() => this.props.navigation.navigate(this.props.link, {item: this.props.data})}>{this.props.data.User.phone.work}</Text>
         <View style={styles.rates}>
           <Image style={styles.star} source={this.props.data.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
           <Image style={styles.star} source={this.props.data.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
@@ -25,7 +25,7 @@ class RateHomeAbonent extends React.Component {
         <View style={styles.time}>
           {this.props.type != 1 &&
             <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate(this.props.link)}>{this.props.data.tab}</Text>
+              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate(this.props.link, {item: this.props.data})}>{this.props.data.ContactPerson.name.slice(0, 1)}</Text>
             </View>
           }
         </View>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -30,59 +30,45 @@ class DetailsScreen extends React.Component {
         keys: [],
       },
       months: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+      weeks: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
     };
-    this.data = {
-     "rate": 3.4444444444444446,
-     "totalReviews": 128,
-     "ratesCountByGroup": {
-     "1": 3,
-     "3": 1,
-     "4": 7,
-     "5": 117
-     },
-     "avgRatingsPerTimeInterval": {
-     "weeklyRating": {},
-     "monthlyRating": {
-     "17": 5,
-     "18": 4,
-     "05": 5,
-     "06": 5,
-     "07": 5
-     },
-     "yearlyRating": {
-     "12": 5,
-     "02": 4.955555555555556,
-     "01": 4.728571428571429
-     }
-     },
-     "topServiceProviders": [
-     {
-     "_id": "5de7b9316234fc078cc497f6",
-     "nameKz": "Service Provider3",
-     "nameRu": "Service Provider3",
-     "rate": 3.4444444444444446
-     },
-     {
-     "_id": "5dee2e987092c71a1c13960e",
-     "nameKz": "Алатау ауданының акиматы",
-     "nameRu": "Акимат Алатауского района",
-     "rate": 0
-     },
-     {
-     "_id": "5e197fb65bcb0c155c18f9b5",
-     "nameKz": "йкпкп",
-     "nameRu": "цікці",
-     "rate": 0
-     }
-     ]
-    };
-    Object.keys(this.data.avgRatingsPerTimeInterval.monthlyRating).map((item) => {
-      this.chart.month.keys.push(item);
-      this.chart.month.values.push(Number(this.data.avgRatingsPerTimeInterval.monthlyRating[`${item}`].toFixed(1)));
-    });
-    Object.keys(this.data.avgRatingsPerTimeInterval.yearlyRating).map((item) => {
-      this.chart.year.keys.push(this.chart.months[Number(item) - 1]);
-      this.chart.year.values.push(Number(this.data.avgRatingsPerTimeInterval.yearlyRating[`${item}`].toFixed(1)));
+    this.data = {};
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch("http://188.166.223.192:6000/api/admin/rating",
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': value,
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.data = result;
+            Object.keys(this.data.avgRatingsPerTimeInterval.monthlyRating).map((item) => {
+              this.chart.month.keys.push(item);
+              this.chart.month.values.push(Number(this.data.avgRatingsPerTimeInterval.monthlyRating[`${item}`].toFixed(1)));
+            });
+            Object.keys(this.data.avgRatingsPerTimeInterval.yearlyRating).map((item) => {
+              this.chart.year.keys.push(this.chart.months[Number(item) - 1]);
+              this.chart.year.values.push(Number(this.data.avgRatingsPerTimeInterval.yearlyRating[`${item}`].toFixed(1)));
+            });
+            Object.keys(this.data.avgRatingsPerTimeInterval.weeklyRating).map((item) => {
+              this.chart.week.keys.push(this.chart.weeks[Number(item) - 1]);
+              this.chart.week.values.push(Number(this.data.avgRatingsPerTimeInterval.weeklyRating[`${item}`].toFixed(1)));
+            });
+            this.setState({statusLoad: true});
+          },
+          (error) => {}
+        );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
     });
   }
 

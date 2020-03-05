@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -12,6 +12,7 @@ class AbonentComplaintProcessedScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      statusLoad: false,
       categoryes: [
         { name: 'Комфорт', id: 1 },
         { name: 'Сервис', id: 2 },
@@ -38,59 +39,93 @@ class AbonentComplaintProcessedScreen extends React.Component {
         tab: 'Д',
       },
     };
+    this.complaints = [];
+    this.data = {};
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch(`http://188.166.223.192:6000/api/reviews/${this.props.route.params.item._id}`,
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': value,
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.data = result;
+            result.review.categories.forEach((item) => {
+              item.criterias.forEach((item2) => {
+                this.complaints.push(item2.nameRu);
+              })
+            });
+            this.setState({statusLoad: true});
+          },
+          (error) => {}
+        );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
+    });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <CustomHeader navigation={this.props.navigation} title='Обработанная' />
+        <CustomHeader navigation={this.props.navigation} title='Обработанные' />
+        {this.state.statusLoad &&
         <ScrollView>
           <View style={styles.containerScreen}>
-            <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обрабатывает</Text>
+            <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обработал</Text>
             <View style={[styles.value, {flexDirection: 'row'}]}>
-              <View style={styles.tab}><Text style={styles.value}>{this.state.item.tab}</Text></View>
-              <Text style={[styles.value, {marginTop: 5}]}>{this.state.item.name}</Text>
+              <View style={styles.tab}><Text style={styles.value}>{this.data.review.Operator.name ? this.data.review.Operator.name.slice(0, 1) : ''}</Text></View>
+              <Text style={[styles.value, {marginTop: 5}]}>{this.data.review.Operator.name ? this.data.review.Operator.name : ''}</Text>
             </View>
             <Text style={styles.label}>Абонент</Text>
-            <Text style={styles.value}>{this.state.item.phone}</Text>
+            <Text style={styles.value}>{this.data.User.phone.work ? this.data.User.phone.work : ''}</Text>
             <Text style={styles.label}>ФИО</Text>
-            <Text style={styles.value}>{this.state.item.name}</Text>
+            <Text style={styles.value}>{this.data.User.name ? this.data.User.name : ''}</Text>
             <Text style={styles.label}>ИИН</Text>
-            <Text style={styles.value}>{this.state.item.iin}</Text>
+            <Text style={styles.value}></Text>
             <Text style={styles.label}>Оценка</Text>
             <View style={styles.rates}>
-              <Image style={styles.star} source={this.state.item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
             </View>
             <Text style={styles.label}>Категория</Text>
             <View style={styles.categoryBlock}>
-              {this.state.categoryes.map((category, index) =>
+              {this.data.review.categories.map((category, index) =>
                 <View key={index} style={styles.category}>
-                  <View key={index} style={[styles.categoryTab, category.id == this.state.item.category ? styles.on : null]}>
-                    <Image style={styles.catImg} source={require('../assets/images/comfort.png')} />
+                  <View key={index}>
+                    <Image style={styles.catImg} source={'http://188.166.223.192:6000/' + (category.image)} />
                   </View>
-                  <Text style={styles.categoryText}>{category.name}</Text>
+                  <Text style={styles.categoryText}>{category.nameRu}</Text>
                 </View>
               )}
             </View>
             <Text style={styles.label}>Жалобы</Text>
             <View style={styles.complaintBlock}>
-              {this.state.item.complaints.map((complaint, index) =>
+              {this.complaints.map((complaint, index) =>
                 <View key={index} style={styles.complaint}>
-                  <Text style={styles.complaintText}>{complaint.text}</Text>
+                  <Text style={styles.complaintText}>{complaint}</Text>
                 </View>
               )}
             </View>
             <Text style={styles.label}>Комментарий</Text>
-            <Text style={styles.value}>{this.state.item.comment}</Text>
+            <Text style={styles.value}>{this.data.review.text}</Text>
             <Text style={styles.label}>Фотография</Text>
             <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
             <Copy />
-          </View>        
+          </View>
         </ScrollView>
+        }
       </View>
     );
   }

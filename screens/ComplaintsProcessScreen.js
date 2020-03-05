@@ -12,12 +12,6 @@ class ComplaintsProcessScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      abonents: [
-        { phone: '7702 430 2021', rate: 1.5, time: '01:34', tab: 'A' },
-        { phone: '7702 430 2021', rate: 2.5, time: '01:34', tab: 'A' },
-        { phone: '7702 430 2021', rate: 3.5, time: '01:34', tab: 'A' },
-        { phone: '7702 430 2021', rate: 4.4, time: '01:34', tab: 'A' },
-      ],
       statusLoad: false,
     };
     this.data = {};
@@ -65,25 +59,29 @@ class ComplaintsProcessScreen extends React.Component {
                 <Text style={styles.tableHead3}></Text>
               </View>
               <View style={styles.tables}>
-                {this.data.reviews.map((item, index) =>
-                  <View style={styles.abonentCont}>
-                    <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen')}>7777777777</Text>
-                    <View style={styles.rates}>
-                      <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                    </View>
-                    <View style={styles.time}>
-                      {this.props.type != 1 &&
-                        <View style={styles.tab}>
-                          <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen')}>А</Text>
+                {this.data.reviews.map((item, index) => {
+                  if (item.Operator.name) {
+                    return (
+                      <View key={index} style={styles.abonentCont}>
+                        <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item})}>{item.User.phone.work}</Text>
+                        <View style={styles.rates}>
+                          <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
                         </View>
-                      }
-                    </View>
-                  </View>
-                )}
+                        <View style={styles.time}>
+                          {this.props.type != 1 &&
+                            <View style={styles.tab}>
+                              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item})}>{item.Operator.name.slice(0, 1)}</Text>
+                            </View>
+                          }
+                        </View>
+                      </View>
+                    );
+                  }
+                })}
               </View>
               <Copy />
             </View>

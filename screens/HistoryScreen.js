@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, Button, View, Text, Image, ScrollView} from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -10,140 +10,35 @@ class HistoryScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
-    this.data = {
-     "history": [
-     {
-     "_id": "5e5ce5c88c1ca30418e5c785",
-     "reviewId": "5e5ce3908c1ca30418e5c76f",
-     "type": 3,
-     "createdAt": "2020-03-02T10:54:00.110Z",
-     "updatedAt": "2020-03-02T10:54:00.110Z",
-     "__v": 0,
-     "User": {
-     "_id": "5dfdc4cf752d0d1160fbdd29",
-     "phone": {
-     "mobile": [
-     "87784442",
-    "875454"
-     ],
-    "work": "2141245457",
-     "inner": "123"
-     },
-     "name": "Test User 1",
-     "email": "parasat_99_99@mail.ru"
-     }
-     },
-     {
-     "_id": "5e5ce5c88c1ca30418e5c786",
-     "reviewId": "5e5ce3908c1ca30418e5c76f",
-     "type": 2,
-     "createdAt": "2020-03-02T10:54:00.110Z",
-     "updatedAt": "2020-03-02T10:54:00.110Z",
-     "__v": 0,
-     "User": {
-     "_id": "5dfdc4cf752d0d1160fbdd29",
-     "phone": {
-     "mobile": [
-     "87784442",
-    "875454"
-     ],
-    "work": "2141245457",
-     "inner": "123"
-     },
-     "name": "Test User 1",
-     "email": "parasat_99_99@mail.ru"
-     }
-     },
-     {
-     "_id": "5e5ce5b48c1ca30418e5c783",
-     "reviewId": "5e5ce5b48c1ca30418e5c77e",
-     "type": 1,
-     "createdAt": "2020-03-02T10:53:40.123Z",
-     "updatedAt": "2020-03-02T10:53:40.123Z",
-     "__v": 0,
-     "User": {
-     "_id": "5dfdc4cf752d0d1160fbdd29",
-     "phone": {
-     "mobile": [
-     "87784442",
-    "875454"
-     ],
-    "work": "2141245457",
-     "inner": "123"
-     },
-     "name": "Test User 1",
-     "email": "parasat_99_99@mail.ru"
-     }
-     },
-     {
-     "_id": "5e5ce5758c1ca30418e5c777",
-     "reviewId": "5e5ce3908c1ca30418e5c76f",
-     "type": 1,
-     "createdAt": "2020-03-02T10:52:37.391Z",
-     "updatedAt": "2020-03-02T10:52:37.391Z",
-     "__v": 0,
-     "User": {
-     "_id": "5dfdc4cf752d0d1160fbdd29",
-     "phone": {
-     "mobile": [
-     "87784442",
-    "875454"
-     ],
-     "work": "2141245457",
-     "inner": "123"
-     },
-     "name": "Test User 1",
-     "email": "parasat_99_99@mail.ru"
-     }
-     },
-     {
-     "_id": "5e5ce5758c1ca30418e5c776",
-     "reviewId": "5e5ce3908c1ca30418e5c76f",
-     "type": 4,
-     "createdAt": "2020-03-02T10:52:37.390Z",
-     "updatedAt": "2020-03-02T10:52:37.390Z",
-     "__v": 0,
-     "User": {
-     "_id": "5dfdc4cf752d0d1160fbdd29",
-     "phone": {
-     "mobile": [
-     "87784442",
-    "875454"
-     ],
-     "work": "2141245457",
-     "inner": "123"
-     },
-     "name": "Test User 1",
-     "email": "parasat_99_99@mail.ru"
-     }
-     },
-     {
-     "_id": "5e5ce3908c1ca30418e5c774",
-     "reviewId": "5e5ce3908c1ca30418e5c76f",
-     "type": 1,
-     "createdAt": "2020-03-02T10:44:32.471Z",
-     "updatedAt": "2020-03-02T10:44:32.471Z",
-     "__v": 0,
-     "User": {
-     "_id": "5dfdc4cf752d0d1160fbdd29",
-     "phone": {
-     "mobile": [
-     "87784442",
-    "875454"
-     ],
-    "work": "2141245457",
-     "inner": "123"
-     },
-     "name": "Test User 1",
-     "email": "parasat_99_99@mail.ru"
-     }
-     }
-     ],
-     "pageSize": 20,
-     "total": 6,
-     "currentPage": 1
+    this.state = {
+      statusLoad: false,
     };
+    this.data = {};
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch("http://188.166.223.192:6000/api/admin/history",
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': value,
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.data = result;
+            this.setState({statusLoad: true});
+          },
+          (error) => {}
+        );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
+    });
   }
 
   getTime(time) {
@@ -156,6 +51,7 @@ class HistoryScreen extends React.Component {
     return (
         <View style={styles.container}>
           <CustomHeader navigation={this.props.navigation} title="История" />
+          {this.state.statusLoad &&
           <ScrollView>
             <View style={styles.containerScreen}>
               {this.data.history.map((item, index) =>
@@ -230,6 +126,7 @@ class HistoryScreen extends React.Component {
               <Copy />
             </View>
           </ScrollView>
+          }
         </View>
     );
   }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -12,85 +12,135 @@ class AbonentComplaintProcessScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      categoryes: [
-        { name: 'Комфорт', id: 1 },
-        { name: 'Сервис', id: 2 },
-        { name: 'Процедуры', id: 3 },
-        { name: 'Персонал', id: 4 },
-      ],
-      item: {
-        type: '1',
-        phone: '7702 430 2021',
-        rate: 1.5,
-        time: '01:34',
-        tab: 'Д',
-        user: 'Досаев Ержан',
-        name: 'Ахметов Бауржан Ермекович',
-        iin: '781210400357',
-        category: 2,
-        complaints: [
-          { text: 'Не компетентность персонала' },
-          { text: 'Время ожидания в очереди' },
-          { text: 'Отсутствие условий для лиц с ограниченными возможностями' },
-        ],
-        comment: 'Ужасное поведение менеджера, грубит, тянет время, неуч. Примите меры!',
-        photo: '',
-        tab: 'Д',
-      },
+      statusLoad: false,
+      time: '',
+      timerStatus: false,
     };
+    this.complaints = [];
+    this.data = {};
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch(`http://188.166.223.192:6000/api/reviews/${this.props.route.params.item._id}`,
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': value,
+            },
+          }
+        )
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.data = result;
+            result.review.categories.forEach((item) => {
+              item.criterias.forEach((item2) => {
+                this.complaints.push(item2.nameRu);
+              })
+            });
+            const date = this.data.review.createdAt.split('T');
+            const date_p = date[0].split('-');
+            const time = date[1].split('.');
+            const time_p = time[0].split(':');
+            //const old_date = new Date(Number(date_p[0]), Number(date_p[1]) - 1, Number(date_p[2]), Number(time_p[0]), Number(time_p[1]), Number(time_p[2]));
+            const old_date = new Date(2020, 2, 6, 2, 51);//dssadss
+            const new_date = new Date();
+            const timer_m = Math.ceil((new_date.getTime() - old_date.getTime()) / (60000));
+            let timeTextM = 5;
+            let timeTextS = 59;
+            if (timer_m > 5) {
+              this.setState({timerStatus: true, time: '00:00'})
+            } else {
+              const timeInt = setInterval(() => {
+                timeTextM = `0${Math.ceil((new_date.getTime() - old_date.getTime()) / (60000))}`;
+                timeTextS = `${Math.ceil((new_date.getTime() - old_date.getTime()) / (6000))}`;
+                this.setState({time: `${timeTextM}:${timeTextS}`});
+              }, 1000);
+            }
+            this.setState({statusLoad: true});
+          },
+          (error) => {}
+        );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
+    });
   }
 
   render() {
     return (
       <View style={styles.container}>
         <CustomHeader navigation={this.props.navigation} title='В процессе' />
+        {this.state.statusLoad &&
         <ScrollView>
           <View style={styles.containerScreen}>
             <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обрабатывает</Text>
             <View style={[styles.value, {flexDirection: 'row'}]}>
-              <View style={styles.tab}><Text style={styles.value}>{this.state.item.tab}</Text></View>
-              <Text style={[styles.value, {marginTop: 5}]}>{this.state.item.name}</Text>
+              <View style={styles.tab}><Text style={styles.value}>{this.data.review.Operator.name ? this.data.review.Operator.name.slice(0, 1) : ''}</Text></View>
+              <Text style={[styles.value, {marginTop: 5}]}>{this.data.review.Operator.name ? this.data.review.Operator.name : ''}</Text>
             </View>
             <Text style={styles.label}>Абонент</Text>
-            <Text style={styles.value}>{this.state.item.phone}</Text>
+            <Text style={styles.value}>{this.data.User.phone.work ? this.data.User.phone.work : ''}</Text>
             <Text style={styles.label}>ФИО</Text>
-            <Text style={styles.value}>{this.state.item.name}</Text>
+            <Text style={styles.value}>{this.data.User.name ? this.data.User.name : ''}</Text>
             <Text style={styles.label}>ИИН</Text>
-            <Text style={styles.value}>{this.state.item.iin}</Text>
+            <Text style={styles.value}></Text>
             <Text style={styles.label}>Оценка</Text>
             <View style={styles.rates}>
-              <Image style={styles.star} source={this.state.item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.state.item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
             </View>
             <Text style={styles.label}>Категория</Text>
             <View style={styles.categoryBlock}>
-              {this.state.categoryes.map((category, index) =>
+              {this.data.review.categories.map((category, index) =>
                 <View key={index} style={styles.category}>
-                  <View key={index} style={[styles.categoryTab, category.id == this.state.item.category ? styles.on : null]}>
-                    <Image style={styles.catImg} source={require('../assets/images/comfort.png')} />
+                  <View key={index}>
+                    <Image style={styles.catImg} source={'http://188.166.223.192:6000/' + (category.image)} />
                   </View>
-                  <Text style={styles.categoryText}>{category.name}</Text>
+                  <Text style={styles.categoryText}>{category.nameRu}</Text>
                 </View>
               )}
             </View>
             <Text style={styles.label}>Жалобы</Text>
             <View style={styles.complaintBlock}>
-              {this.state.item.complaints.map((complaint, index) =>
+              {this.complaints.map((complaint, index) =>
                 <View key={index} style={styles.complaint}>
-                  <Text style={styles.complaintText}>{complaint.text}</Text>
+                  <Text style={styles.complaintText}>{complaint}</Text>
                 </View>
               )}
             </View>
             <Text style={styles.label}>Комментарий</Text>
-            <Text style={styles.value}>{this.state.item.comment}</Text>
+            <Text style={styles.value}>{this.data.review.text}</Text>
             <Text style={styles.label}>Фотография</Text>
             <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
-            <Copy />
+          </View>
+          <View style={styles.callBlock}>
+            {this.state.timerStatus &&
+              <View style={styles.callDefButton}>
+                <Text style={styles.callDefText}>Позвонить</Text>
+                <View style={styles.callDefTime}>
+                  <Icon name="stopwatch" style={styles.callDefIcon} />
+                  <Text style={styles.callDefTimeText}>{this.state.time}</Text>
+                </View>
+              </View>
+            }
+            {this.state.timerStatus === false&&
+              <View style={styles.callButton}>
+                <Text style={styles.callText}>Позвонить</Text>
+                <View style={styles.callTime}>
+                  <Icon name="stopwatch" style={styles.callIcon} />
+                  <Text style={styles.callTimeText}>{this.state.time}</Text>
+                </View>
+              </View>
+            }
           </View>
         </ScrollView>
+        }
       </View>
     );
   }
@@ -254,5 +304,36 @@ const styles = StyleSheet.create({
   },
   callTimeText: {
     fontSize: 13,
-  }
+  },
+  callDefButton: {
+    backgroundColor: '#c71414',
+    flexDirection: 'row',
+  },
+  callDefTime: {
+    width: '35%',
+    borderLeftWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#FFF',
+    paddingTop: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  callDefText: {
+    width: '65%',
+    textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 13,
+    color: '#FFF',
+  },
+  callDefIcon: {
+    fontSize: 22,
+    paddingRight: 10,
+    color: '#FFF',
+  },
+  callDefTimeText: {
+    fontSize: 13,
+    color: '#FFF',
+  },
 });
