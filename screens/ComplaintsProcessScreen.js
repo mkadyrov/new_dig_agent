@@ -20,7 +20,7 @@ class ComplaintsProcessScreen extends React.Component {
   componentDidMount() {
     AsyncStorage.getItem('token').then((value) => {
       if (value !== '') {
-        fetch("http://188.166.223.192:6000/api/admin/reviews?status=inProcess&page=1",
+        fetch("https://api2.digitalagent.kz/api/admin/reviews?status=inProcess&page=1",
           {
             method: 'GET',
             headers: {

@@ -14,9 +14,9 @@ class LoginScreen extends React.Component {
     this.state = {
       recover: false,
       position: 'center',
-      email: 'test@gmail.com1',
+      email: '',
       emailRecover: '',
-      password: '123456789',
+      password: '',
       token: '',
       success: false,
       successFalse: false,
@@ -57,11 +57,12 @@ class LoginScreen extends React.Component {
         (result) => {
           this.setPostion(false);
           AsyncStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTVmNWU4MjVkYzI5ODAwNTQ4MjZhN2UiLCJleHAiOjE1ODg1Mjg1MjAsImlhdCI6MTU4MzM0NDUyMH0.8bG-smVSse2kRKj9E2qzj-WQGCrDrMWVTlgOHvJDh7A');
+          AsyncStorage.setItem('token', result.token);
           this.props.navigation.navigate('Home');
           if (result.token) {
             if (result.role.name === 'operator') {
               AsyncStorage.setItem('id', result.id);
-              //AsyncStorage.setItem('token', result.token);
+              AsyncStorage.setItem('token', result.token);
               this.props.navigation.navigate('Home');
             } else {
               this.setState({successFalse: false, successNotTrue: true, successInvalid: false})

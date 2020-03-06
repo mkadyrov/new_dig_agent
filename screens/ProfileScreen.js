@@ -27,7 +27,7 @@ class ProfileScreen extends React.Component {
   componentDidMount() {
     AsyncStorage.getItem('token').then((value) => {
       if (value !== '') {
-        fetch("http://188.166.223.192:6000/api/admin/profile",
+        fetch("https://api2.digitalagent.kz/api/admin/profile",
           {
             method: 'GET',
             headers: {
@@ -53,7 +53,7 @@ class ProfileScreen extends React.Component {
     if (this.state.newPassword !== '' && this.state.confirmPassword !== '') {
       this.setState({success: false, successFalse: false, successNotTrue: false, block: true});
       if (this.state.newPassword === this.state.confirmPassword) {
-        fetch("http://188.166.223.192:6000/api/profile/password",
+        fetch("https://api2.digitalagent.kz/api/profile/password",
           {
             method: 'PUT',
             body: JSON.stringify({email: this.state.newPassword}),

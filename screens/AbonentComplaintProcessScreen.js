@@ -37,7 +37,7 @@ class AbonentComplaintProcessScreen extends React.Component {
     componentDidMount() {
         AsyncStorage.getItem('token').then((value) => {
             if (value !== '') {
-                fetch(`http://188.166.223.192:6000/api/reviews/${this.props.route.params.item._id}`,
+                fetch(`https://api2.digitalagent.kz/api/reviews/${this.props.route.params.item._id}`,
                     {
                         method: 'GET',
                         headers: {
@@ -112,6 +112,8 @@ class AbonentComplaintProcessScreen extends React.Component {
                         <Text style={styles.value}>{this.data.User.name ? this.data.User.name : ''}</Text>
                         <Text style={styles.label}>ИИН</Text>
                         <Text style={styles.value}></Text>
+                        <Text style={styles.label}>Email</Text>
+                        <Text style={styles.value}>{this.data.User?.email}</Text>
                         <Text style={styles.label}>Оценка</Text>
                         <View style={styles.rates}>
                             <Image style={styles.star}
@@ -131,7 +133,7 @@ class AbonentComplaintProcessScreen extends React.Component {
                                 <View key={index} style={styles.category}>
                                     <View key={index}>
                                         <Image style={styles.catImg}
-                                               source={{url: 'http://188.166.223.192:6000/' + category.image}}/>
+                                               source={{url: 'https://api2.digitalagent.kz/' + category.image}}/>
                                     </View>
                                     <Text style={styles.categoryText}>{category.nameRu}</Text>
                                 </View>

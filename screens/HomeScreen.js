@@ -23,7 +23,7 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     AsyncStorage.getItem('token').then((value) => {
       if (value !== '') {
-        fetch("http://188.166.223.192:6000/api/admin",
+        fetch("https://api2.digitalagent.kz/api/admin",
           {
             method: 'GET',
             headers: {
