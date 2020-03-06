@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -86,23 +86,25 @@ class ComplaintsProcessedScreen extends React.Component {
                   {this.data.reviews.map((item, index) => {
                     if (item.Operator._id === user && item.Operator.name) {
                       return (
-                        <View key={index} style={styles.abonentCont}>
-                          <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.User.phone.work}</Text>
-                          <View style={styles.rates}>
-                            <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                            <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                            <Image style={styles.star} source={item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                            <Image style={styles.star} source={item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                            <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>
+                          <View key={index} style={styles.abonentCont}>
+                            <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.User.phone.work}</Text>
+                            <View style={styles.rates}>
+                              <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                            </View>
+                            <View style={styles.time}>
+                              {this.props.type != 1 &&
+                                <View style={styles.tab}>
+                                  <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.Operator.name.slice(0, 1)}</Text>
+                                </View>
+                              }
+                            </View>
                           </View>
-                          <View style={styles.time}>
-                            {this.props.type != 1 &&
-                              <View style={styles.tab}>
-                                <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.Operator.name.slice(0, 1)}</Text>
-                              </View>
-                            }
-                          </View>
-                        </View>
+                        </TouchableOpacity>
                       );
                     }
                   })}

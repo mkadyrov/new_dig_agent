@@ -12,12 +12,14 @@ class AbonentComplaintProcessScreen extends React.Component {
             statusLoad: false,
             time: '',
             timerStatus: false,
+            sendButton: false,
         };
         this.complaints = [];
         this.data = {};
     }
 
     handleCall(tel) {
+      this.setState({sendButton: true});
         Linking.openURL("tel:" + tel)
     }
     getTimer(){
@@ -194,6 +196,13 @@ class AbonentComplaintProcessScreen extends React.Component {
             </TouchableOpacity>
             }
           </View>
+          {this.state.sendButton &&
+            <View style={styles.callBlock}>
+              <View style={styles.callButton}>
+                <Text style={[styles.callText, {width: '100%'}]}>Отправить потверждение для закрытия жалобы</Text>
+              </View>
+            </View>
+          }
         </ScrollView>
         }
       </View>

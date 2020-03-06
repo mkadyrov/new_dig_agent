@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
 import { Header } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
@@ -11,25 +11,38 @@ class RateHomeAbonent extends React.Component {
     this.state = {};
   }
 
+  getM(item) {
+    return false;
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.phone} onPress={() => this.props.navigation.navigate(this.props.link, {item: this.props.data})}>{this.props.data.User.phone.work}</Text>
-        <View style={styles.rates}>
-          <Image style={styles.star} source={this.props.data.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.data.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.data.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.data.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-          <Image style={styles.star} source={this.props.data.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+      <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.link, {item: this.props.data})}>
+        <View style={styles.container}>
+          <Text style={styles.phone}>{this.props.data.User.phone.work}</Text>
+          <View style={styles.rates}>
+            <Image style={styles.star} source={this.props.data.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+          </View>
+          <View style={styles.time}>
+            {this.getM(this.props.data) && this.props.type == 2 || this.props.type == 3 &&
+              <View style={styles.tab}>
+                <Text style={styles.tabText}>
+                  {this.props.data.ContactPerson.name.slice(0, 1)}
+                </Text>
+              </View>
+            }
+            {!this.getM(this.props.data) && this.props.type == 2  &&
+              <View style={styles.tabTimeout}>
+                <Image source={require('../assets/images/crown.png')} style={{width: 15, height: 10, marginTop: -5}}/>
+              </View>
+            }
+          </View>
         </View>
-        <View style={styles.time}>
-          {this.props.type != 1 &&
-            <View style={styles.tab}>
-              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate(this.props.link, {item: this.props.data})}>{this.props.data.ContactPerson.name.slice(0, 1)}</Text>
-            </View>
-          }
-        </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 };
@@ -82,6 +95,16 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: '#E8E8E8',
     paddingTop: 3,
+  },
+  tabTimeout: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    backgroundColor: '#d91414',
+    paddingTop: 3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tabText: {
     width: '100%',

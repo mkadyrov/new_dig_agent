@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView } from 'react-native';
+import { AsyncStorage, StyleSheet, Button, View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomHeader from "../components/CustomHeader";
@@ -42,6 +42,10 @@ class ComplaintsProcessScreen extends React.Component {
     });
   }
 
+  getM(item) {
+    return false;
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -62,8 +66,9 @@ class ComplaintsProcessScreen extends React.Component {
                 {this.data.reviews.map((item, index) => {
                   if (item.Operator.name) {
                     return (
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item})}>
                       <View key={index} style={styles.abonentCont}>
-                        <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item})}>{item.User.phone.work}</Text>
+                        <Text style={styles.phone}>{item.User.phone.work}</Text>
                         <View style={styles.rates}>
                           <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
                           <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
@@ -72,13 +77,21 @@ class ComplaintsProcessScreen extends React.Component {
                           <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
                         </View>
                         <View style={styles.time}>
-                          {this.props.type != 1 &&
+                          {this.getM(this.props.data) &&
                             <View style={styles.tab}>
-                              <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item})}>{item.Operator.name.slice(0, 1)}</Text>
+                              <Text style={styles.tabText}>
+                                {item.Operator.name.slice(0, 1)}
+                              </Text>
+                            </View>
+                          }
+                          {!this.getM(this.props.data) &&
+                            <View style={styles.tabTimeout}>
+                              <Image source={require('../assets/images/crown.png')} style={{width: 15, height: 10, marginTop: -5}}/>
                             </View>
                           }
                         </View>
                       </View>
+                      </TouchableOpacity>
                     );
                   }
                 })}
@@ -190,5 +203,15 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     fontSize: 12,
-  }
+  },
+  tabTimeout: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    backgroundColor: '#d91414',
+    paddingTop: 3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
