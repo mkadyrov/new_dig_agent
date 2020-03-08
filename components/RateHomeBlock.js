@@ -30,7 +30,7 @@ class RateHomeBlock extends React.Component {
         <View style={styles.tableHead}>
           <Text style={styles.tableHead1}>Абонент</Text>
           <Text style={styles.tableHead2}>Рейтинг</Text>
-          {this.props.type == 1 &&
+          {this.props.type == 2 &&
             <Text style={styles.tableHead3}>Время</Text>
           }
         </View>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   tableHead1: {
-    width: '45%',
+    width: '35%',
     color: '#777',
     fontSize: 13,
     textAlign: 'left',

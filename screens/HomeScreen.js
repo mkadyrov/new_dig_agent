@@ -9,6 +9,7 @@ import Copy from "../components/Copy";
 var base64 = require('base-64');
 
 import { Icon } from 'native-base';
+import moment from "moment";
 
 class HomeScreen extends React.Component {
 
@@ -35,6 +36,10 @@ class HomeScreen extends React.Component {
         .then(
           (result) => {
             this.data = result;
+            this.data.reviews.inProcessReviews = this.data.reviews.inProcessReviews.map(item=>{
+              item.timer= Math.floor(parseFloat(moment(item.createdAt).add(5,"minutes").format("x"))) - Math.floor(parseFloat(moment().format("x")));
+            return item;
+            });
             this.setState({statusLoad: true});
           },
           (error) => {}

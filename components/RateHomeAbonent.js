@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
 import { Header } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
+import CountDown from "react-native-countdown-component";
 
 class RateHomeAbonent extends React.Component {
 
@@ -27,6 +28,12 @@ class RateHomeAbonent extends React.Component {
             <Image style={styles.star} source={this.props.data.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
             <Image style={styles.star} source={this.props.data.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
           </View>
+          <CountDown
+              until={this.props.data.timer}
+              size={10}
+              timeToShow={["M","S"]}
+              timeLabels={{d: 'Days', h: 'Hours', m: '', s: ''}}
+          />
           <View style={styles.time}>
             {this.getM(this.props.data) && this.props.type == 2 || this.props.type == 3 &&
               <View style={styles.tab}>
@@ -61,7 +68,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   phone: {
-    width: '45%',
+    width: '35%',
     height: 30,
     fontSize: 12,
     flexDirection: 'row',
@@ -69,7 +76,7 @@ const styles = StyleSheet.create({
     paddingTop: 3,
   },
   rates: {
-    width: '40%',
+    width: '35%',
     height: 30,
     alignItems: 'center',
     flexDirection: 'row',

@@ -99,7 +99,7 @@ class ProfileScreen extends React.Component {
                 <Text style={styles.label}>Раб. телефон</Text>
                 <Text style={styles.value}>{this.data.user.phone.work}</Text>
                 <Text style={styles.label}>Моб. телефон</Text>
-                {this.data.user.phone.mobile.map((mob, index2) =>
+                {this?.data?.user?.phone?.mobile?.map((mob, index2) =>
                   <Text key={index2} style={styles.value}>{mob}</Text>
                 )}
                 <Text style={styles.label}>Электронная почта</Text>

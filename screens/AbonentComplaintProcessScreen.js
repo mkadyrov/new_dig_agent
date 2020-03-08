@@ -51,7 +51,7 @@ class AbonentComplaintProcessScreen extends React.Component {
                     .then(
                         (result) => {
                             this.data = result;
-                            let timer = moment(this.data.review.createdAt).format("X") - moment().format("X");
+                            // let timer = moment(this.data.review.createdAt).format("X") - moment().format("X");
 
                             this.data.timer= Math.floor(parseFloat(moment(this.data.review.createdAt).add(5,"minutes").format("x"))) - Math.floor(parseFloat(moment().format("x")));
 
