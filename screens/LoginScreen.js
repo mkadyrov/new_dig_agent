@@ -212,7 +212,7 @@ class LoginScreen extends React.Component {
             </View>
           }
         </View>
-        <Text style={styles.copy}>© 2019 Digital Agent. Все права принадлежат народу.</Text>
+        <Text style={styles.copy}>© 2020 Digital Agent. Все права принадлежат народу.</Text>
       </View>
     );
   };
