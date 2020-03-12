@@ -94,7 +94,7 @@ export default function SideBarNavigator({ navigation, route }) {
                 name="ComplaintsProcessScreen"
                 component={ComplaintsProcessScreen}
                 options={{
-                    title: 'В процессе',
+                    title: 'Активные',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />
@@ -103,7 +103,7 @@ export default function SideBarNavigator({ navigation, route }) {
                 name="ComplaintsProcessedScreen"
                 component={ComplaintsProcessedScreen}
                 options={{
-                    title: 'Обработанные',
+                    title: 'Завершенные',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />
@@ -112,7 +112,7 @@ export default function SideBarNavigator({ navigation, route }) {
                 name="AbonentComplaintProcessScreen"
                 component={AbonentComplaintProcessScreen}
                 options={{
-                    title: 'В процессе',
+                    title: 'Активные',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
                 }}
             />

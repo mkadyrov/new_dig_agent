@@ -6,10 +6,9 @@
     "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -18,15 +17,17 @@
       "resizeMode": "contain",
       "backgroundColor": "#333333"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.automato.digitalagentpro",
+      "buildNumber": "1.0.2"
     },
-    "description": ""
+    "android": {
+      "package": "com.automato.digitalagentpro",
+      "versionCode": 3
+    },
+    "description": "Digital Agent Pro - это приложение для работы с Digital Agent и является его инструментом. Приложение используется только для услугодателей, которые размещены в Digital Agent. В Приложение отсутствует регистрация, только авторизация для внутренних пользователей."
   }
 }

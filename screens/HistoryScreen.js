@@ -89,7 +89,7 @@ class HistoryScreen extends React.Component {
                         <Text style={styles.normalText}>
                           Жалоба от <Text style={styles.boldText}>{item.User.phone.work}</Text> получила статус
                         </Text>
-                        <Text style={styles.boldText}>В процессе</Text>
+                        <Text style={styles.boldText}>Активные</Text>
                         <Text style={styles.dateText}>{this.getTime(item.createdAt)}</Text>
                       </View>
                     }
@@ -98,7 +98,7 @@ class HistoryScreen extends React.Component {
                         <Text style={styles.normalText}>
                           Жалоба от <Text style={styles.boldText}>{item.User.phone.work}</Text> получила статус
                         </Text>
-                        <Text style={styles.boldText}>Обработанные</Text>
+                        <Text style={styles.boldText}>Завершенные</Text>
                         <Text style={styles.dateText}>{this.getTime(item.createdAt)}</Text>
                       </View>
                     }

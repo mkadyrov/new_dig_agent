@@ -49,12 +49,12 @@ class ComplaintsProcessScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <CustomHeader navigation={this.props.navigation} title="В процессе" />
+        <CustomHeader navigation={this.props.navigation} title="Активные" />
         {this.state.statusLoad &&
           <ScrollView>
             <View style={styles.containerScreen}>
               <Text style={styles.topTitle}>
-                <Image style={{ width: 25, height: 20, }} source={require('../assets/images/2.png')} /> В процессе
+                <Image style={{ width: 25, height: 20, }} source={require('../assets/images/2.png')} /> Активные
               </Text>
               <Text style={styles.topTitleText}>Нет данных</Text>
               <View style={styles.tableHead}>

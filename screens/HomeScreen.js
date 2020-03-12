@@ -74,7 +74,7 @@ class HomeScreen extends React.Component {
                 <View style={styles.complaintCont}>
                   <View style={styles.complaintBlockL}>
                     <View style={styles.complaintBlock}>
-                      <Text style={styles.complaintText}>В процессе</Text>
+                      <Text style={styles.complaintText}>Активные</Text>
                       <View style={styles.complaintCounts}>
                         <Image style={{ width: 30, height: 25, }} source={require('../assets/images/2.png')} />
                         <Text style={styles.complaintCount}>{this.data.total.inProcess}</Text>
@@ -92,10 +92,10 @@ class HomeScreen extends React.Component {
                   </View>
                 </View>
                 {this.data.reviews.inProcessReviews.length > 0 &&
-                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="В процессе" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
+                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Активные" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
                 }
                 {this.data.reviews.inProcessReviews.length > 0 &&
-                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Обработанные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
+                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Завершенные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
                 }
                 <Copy />
               </View>

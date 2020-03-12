@@ -52,12 +52,12 @@ class ComplaintsProcessedScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <CustomHeader navigation={this.props.navigation} title="Обработанные" />
+        <CustomHeader navigation={this.props.navigation} title="Завершенные" />
         {this.state.statusLoad &&
         <ScrollView>
           <View style={styles.containerScreen}>
             <Text style={styles.topTitle}>
-              <Image style={{ width: 25, height: 20, }} source={require('../assets/images/3.png')} /> Обработанные
+              <Image style={{ width: 25, height: 20, }} source={require('../assets/images/3.png')} /> Завершенные
             </Text>
             <Text style={styles.topTitleText}>Список обработанных жалоб от абонента, с разделением на сотрудников, которые их обработали.</Text>
             {this.users.map((user, index) =>

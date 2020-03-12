@@ -96,7 +96,7 @@ class AbonentComplaintProcessScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <CustomHeader navigation={this.props.navigation} title='В процессе'/>
+                <CustomHeader navigation={this.props.navigation} title='Активные'/>
                 {this.state.statusLoad &&
                 <ScrollView>
                     <View style={styles.containerScreen}>
