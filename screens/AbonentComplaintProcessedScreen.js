@@ -80,13 +80,13 @@ class AbonentComplaintProcessedScreen extends React.Component {
         {this.state.statusLoad &&
         <ScrollView>
           <View style={styles.containerScreen}>
-            <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обработал</Text>
+            <Text style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обработал(-a)</Text>
             <View style={[styles.value, {flexDirection: 'row'}]}>
-              <View style={styles.tab}><Text style={styles.value}>{this.data.review.Operator.name ? this.data.review.Operator.name.slice(0, 1) : ''}</Text></View>
-              <Text style={[styles.value, {marginTop: 5}]}>{this.data.review.Operator.name ? this.data.review.Operator.name : ''}</Text>
+              <View style={styles.tab}><Text style={styles.tabvalue}>{this.data.review.Operator[0] ? String(this.data.review.Operator[0].name).trim().slice(0, 1) : ''}</Text></View>
+              <Text style={[styles.value, {marginTop: 5}]}>{this.data.review.Operator[0] ? String(this.data.review.Operator[0].name).trim() : ''}</Text>
             </View>
             <Text style={styles.label}>Абонент</Text>
-            <Text style={styles.value}>{this.data.User.phone.work ? this.data.User.phone.work : ''}</Text>
+            <Text style={styles.value}>{this.data.User.phone.mobile ? this.data.User.phone.mobile : ''}</Text>
             <Text style={styles.label}>ФИО</Text>
             <Text style={styles.value}>{this.data.User.name ? this.data.User.name : ''}</Text>
             <Text style={styles.label}>ИИН</Text>
@@ -95,11 +95,11 @@ class AbonentComplaintProcessedScreen extends React.Component {
             <Text style={styles.value}>{this.data.User?.email}</Text>
             <Text style={styles.label}>Оценка</Text>
             <View style={styles.rates}>
-              <Image style={styles.star} source={this.data.review.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.data.review.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.data.review.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.data.review.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-              <Image style={styles.star} source={this.data.review.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 1 ? this.data.review.rate === 1 || this.data.review.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 2 ? this.data.review.rate === 2 || this.data.review.rate > 2.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 3 ? this.data.review.rate === 3 || this.data.review.rate > 3.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 4 ? this.data.review.rate === 4 || this.data.review.rate > 4.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+              <Image style={styles.star} source={this.data.review.rate >= 5 ? this.data.review.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
             </View>
             <Text style={styles.label}>Категория</Text>
             <View style={styles.categoryBlock}>
@@ -178,14 +178,18 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   tab: {
-    backgroundColor: '#E8E8E8',
-    borderRadius: 40,
-    width: 40,
-    height: 40,
-    marginRight: 15,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingTop: 5,
+      backgroundColor: '#E8E8E8',
+      borderRadius: 24,
+      width: 24,
+      height: 24,
+      marginRight: 10,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      paddingTop: 3,
+      marginTop: 6,
+  },
+  tabvalue: {
+    fontSize: 10,
   },
   rates: {
     width: '40%',

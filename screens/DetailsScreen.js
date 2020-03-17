@@ -14,6 +14,7 @@ class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeInterval: 1,
       statusLoad: false,
     };
     this.chart = {
@@ -110,11 +111,11 @@ class DetailsScreen extends React.Component {
                   <Text style={styles.rate}>{this.data.rate.toFixed(1)}</Text>
                   <View style={styles.ratesBlock}>
                     <View style={styles.rates}>
-                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                      <Image style={styles.star} source={this.data.rate.toFixed(1) >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate >= 1 ? this.data.rate === 1 || this.data.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate >= 2 ? this.data.rate === 2 || this.data.rate > 2.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate >= 3 ? this.data.rate === 3 || this.data.rate > 3.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate >= 4 ? this.data.rate === 4 || this.data.rate > 4.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                      <Image style={styles.star} source={this.data.rate >= 5 ? this.data.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
                     </View>
                   </View>
                   <View style={styles.rateCounts}>
@@ -164,7 +165,6 @@ class DetailsScreen extends React.Component {
                   <Text style={styles.tableRow1}>{index + 1}</Text>
                   <Text style={styles.tableRow2}>{item.nameRu}</Text>
                   <View style={styles.tableRow3}>
-                    <Image style={styles.starRow} source={require('../assets/images/star.png')} />
                     <Text style={styles.tableRow2Text}>{item.rate.toFixed(1)}</Text>
                   </View>
                 </View>
@@ -304,17 +304,20 @@ const styles = StyleSheet.create({
     width: '15%',
     color: '#777',
     fontSize: 13,
+    paddingLeft: 10,
   },
   tableHead2: {
     width: '60%',
     color: '#777',
     fontSize: 13,
+    textAlign: 'center',
   },
   tableHead3: {
     width: '25%',
     color: '#777',
     fontSize: 13,
     textAlign: 'right',
+    paddingRight: 10,
   },
   tableRow: {
     flexDirection: 'row',
@@ -327,6 +330,7 @@ const styles = StyleSheet.create({
   tableRow1: {
     width: '15%',
     fontSize: 12,
+    paddingLeft: 10,
   },
   tableRow2: {
     width: '60%',
@@ -337,6 +341,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     justifyContent: 'flex-end',
     flexDirection: 'row',
+    paddingRight: 10,
   },
   starRow: {
     width: 15,

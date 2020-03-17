@@ -51,6 +51,7 @@ class AbonentComplaintProcessScreen extends React.Component {
                     .then(
                         (result) => {
                             this.data = result;
+                            console.log(result)
                             // let timer = moment(this.data.review.createdAt).format("X") - moment().format("X");
 
                             this.data.timer= Math.floor(parseFloat(moment(this.data.review.createdAt).add(5,"minutes").format("x"))) - Math.floor(parseFloat(moment().format("x")));
@@ -104,12 +105,12 @@ class AbonentComplaintProcessScreen extends React.Component {
                             style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обрабатывает</Text>
                         <View style={[styles.value, {flexDirection: 'row'}]}>
                             <View style={styles.tab}><Text
-                                style={styles.value}>{this.data.review.Operator.name ? this.data.review.Operator.name.slice(0, 1) : ''}</Text></View>
+                                style={styles.tabvalue}>{this.data.review.Operator[0] ? String(this.data.review.Operator[0].name).trim().slice(0, 1) : ''}</Text></View>
                             <Text
-                                style={[styles.value, {marginTop: 5}]}>{this.data.review.Operator.name ? this.data.review.Operator.name : ''}</Text>
+                                style={[styles.value, {marginTop: 5}]}>{this.data.review.Operator[0] ? String(this.data.review.Operator[0].name).trim() : ''}</Text>
                         </View>
                         <Text style={styles.label}>Абонент</Text>
-                        <Text style={styles.value}>{this.data.User.phone.work ? this.data.User.phone.work : ''}</Text>
+                        <Text style={styles.value}>{this.data.User.phone.mobile[0] ? this.data.User.phone.mobile[0] : ''}</Text>
                         <Text style={styles.label}>ФИО</Text>
                         <Text style={styles.value}>{this.data.User.name ? this.data.User.name : ''}</Text>
                         <Text style={styles.label}>ИИН</Text>
@@ -118,16 +119,11 @@ class AbonentComplaintProcessScreen extends React.Component {
                         <Text style={styles.value}>{this.data.User?.email}</Text>
                         <Text style={styles.label}>Оценка</Text>
                         <View style={styles.rates}>
-                            <Image style={styles.star}
-                                   source={this.data.review.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')}/>
-                            <Image style={styles.star}
-                                   source={this.data.review.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')}/>
-                            <Image style={styles.star}
-                                   source={this.data.review.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')}/>
-                            <Image style={styles.star}
-                                   source={this.data.review.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')}/>
-                            <Image style={styles.star}
-                                   source={this.data.review.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')}/>
+                            <Image style={styles.star} source={this.data.review.rate >= 1 ? this.data.review.rate === 1 || this.data.review.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                            <Image style={styles.star} source={this.data.review.rate >= 2 ? this.data.review.rate === 2 || this.data.review.rate > 2.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                            <Image style={styles.star} source={this.data.review.rate >= 3 ? this.data.review.rate === 3 || this.data.review.rate > 3.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                            <Image style={styles.star} source={this.data.review.rate >= 4 ? this.data.review.rate === 4 || this.data.review.rate > 4.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                            <Image style={styles.star} source={this.data.review.rate >= 5 ? this.data.review.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
                         </View>
                         <Text style={styles.label}>Категория</Text>
                         <View style={styles.categoryBlock}>
@@ -254,15 +250,19 @@ const styles = StyleSheet.create({
                         fontSize: 15,
                         color: '#333',
                     },
-                        tab: {
+                    tab: {
                         backgroundColor: '#E8E8E8',
-                        borderRadius: 40,
-                        width: 40,
-                        height: 40,
-                        marginRight: 15,
+                        borderRadius: 24,
+                        width: 24,
+                        height: 24,
+                        marginRight: 10,
                         flexDirection: 'row',
                         justifyContent: 'center',
-                        paddingTop: 5,
+                        paddingTop: 3,
+                        marginTop: 6,
+                    },
+                    tabvalue: {
+                      fontSize: 10,
                     },
                         rates: {
                         width: '40%',

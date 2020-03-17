@@ -16,19 +16,24 @@ class RateHomeAbonent extends React.Component {
     return false;
   }
 
+  componentDidMount() {
+    this.props.data.User.phone.mobile = String(this.props.data.User.phone.mobile).replace(/\(/g, '').replace(/\)/g, '').replace(/\s/g, '').replace(/\+/g, '').replace(/\-/g, '');
+  }
+
   render() {
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.link, {item: this.props.data})}>
         <View style={styles.container}>
-          <Text style={styles.phone}>{this.props.data.User.phone.work}</Text>
+          <Text style={styles.phone}>{`${String(this.props.data.User.phone.mobile).slice(0, 1)} ${String(this.props.data.User.phone.mobile).slice(1, String(this.props.data.User.phone.mobile).length)}`}</Text>
           <View style={styles.rates}>
-            <Image style={styles.star} source={this.props.data.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.props.data.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.props.data.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.props.data.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-            <Image style={styles.star} source={this.props.data.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 1 ? this.props.data.rate === 1 || this.props.data.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 2 ? this.props.data.rate === 2 || this.props.data.rate > 2.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 3 ? this.props.data.rate === 3 || this.props.data.rate > 3.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 4 ? this.props.data.rate === 4 || this.props.data.rate > 4.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+            <Image style={styles.star} source={this.props.data.rate >= 5 ? this.props.data.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
           </View>
           <CountDown
+            style={{paddingTop: 1.5}}
               until={this.props.data.timer}
               size={10}
               timeToShow={["M","S"]}
@@ -68,7 +73,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   phone: {
-    width: '35%',
+    width: '34%',
     height: 30,
     fontSize: 12,
     flexDirection: 'row',
@@ -76,19 +81,19 @@ const styles = StyleSheet.create({
     paddingTop: 3,
   },
   rates: {
-    width: '35%',
+    width: '35.5%',
     height: 30,
     alignItems: 'center',
     flexDirection: 'row',
   },
   star: {
-    width: 15,
-    height: 15,
-    marginRight: 5,
+    width: 17,
+    height: 17,
+    marginRight: 2,
     marginTop: -1,
   },
   time: {
-    width: '15%',
+    width: '11%',
     textAlign: 'right',
     alignItems: 'flex-end',
   },
@@ -97,25 +102,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   tab: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     borderRadius: 50,
     backgroundColor: '#E8E8E8',
     paddingTop: 3,
+    marginTop: 3,
   },
   tabTimeout: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     borderRadius: 50,
     backgroundColor: '#d91414',
     paddingTop: 3,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 3,
   },
   tabText: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 10,
   }
 });

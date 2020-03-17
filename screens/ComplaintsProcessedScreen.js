@@ -39,6 +39,10 @@ class ComplaintsProcessedScreen extends React.Component {
                 this.users.push(item.Operator._id);
               }
             });
+            this.data.reviews = this.data.reviews.map((item) => {
+              item.User.phone.mobile = String(item.User.phone.mobile).replace(/\(/g, '').replace(/\)/g, '').replace(/\s/g, '').replace(/\+/g, '').replace(/\-/g, '');
+              return item;
+            });           
             this.setState({statusLoad: true});
           },
           (error) => {}
@@ -70,7 +74,7 @@ class ComplaintsProcessedScreen extends React.Component {
                         <Text style={[styles.label, {marginTop: 0}]}>Сотрудник</Text>
                         <View style={[styles.value, {flexDirection: 'row'}]}>
                           <View style={styles.tab1}>
-                            <Text style={styles.value}>{item.Operator.name.slice(0, 1)}</Text>
+                            <Text style={styles.tab1value}>{String(item.Operator.name).trim().slice(0, 1)}</Text>
                           </View>
                           <Text style={[styles.value, {marginTop: 5}]}>{item.Operator.name}</Text>
                         </View>
@@ -88,18 +92,18 @@ class ComplaintsProcessedScreen extends React.Component {
                       return (
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>
                           <View key={index} style={styles.abonentCont}>
-                            <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.User.phone.work}</Text>
+                            <Text style={styles.phone} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{`${String(item.User.phone.mobile).slice(0, 1)} ${String(item.User.phone.mobile).slice(1, String(item.User.phone.mobile).length)}`}</Text>
                             <View style={styles.rates}>
-                              <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                              <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                              <Image style={styles.star} source={item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                              <Image style={styles.star} source={item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                              <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 1 ? item.rate === 1 || item.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 2 ? item.rate === 2 || item.rate > 2.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 3 ? item.rate === 3 || item.rate > 3.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 4 ? item.rate === 4 || item.rate > 4.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                              <Image style={styles.star} source={item.rate >= 5 ? item.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
                             </View>
                             <View style={styles.time}>
                               {this.props.type != 1 &&
                                 <View style={styles.tab}>
-                                  <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{item.Operator.name.slice(0, 1)}</Text>
+                                  <Text style={styles.tabText} onPress={() => this.props.navigation.navigate('AbonentComplaintProcessedScreen', {item: item})}>{String(item.Operator.name).trim().slice(0, 1)}</Text>
                                 </View>
                               }
                             </View>
@@ -156,17 +160,21 @@ const styles = StyleSheet.create({
   },
   tab1: {
     backgroundColor: '#E8E8E8',
-    borderRadius: 40,
-    width: 40,
-    height: 40,
-    marginRight: 15,
+    borderRadius: 24,
+    width: 24,
+    height: 24,
+    marginRight: 5,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 5,
+    paddingTop: 3,
+    marginTop: 6,
+  },
+  tab1value: {
+    fontSize: 10,
   },
   tableHead: {
     flexDirection: 'row',
-    padding: 10,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderColor: '#DDD',
     borderStyle: 'solid',
@@ -218,9 +226,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   star: {
-    width: 15,
-    height: 15,
-    marginRight: 5,
+    width: 17,
+    height: 17,
+    marginRight: 2,
     marginTop: -1,
   },
   time: {
@@ -233,15 +241,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   tab: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     borderRadius: 50,
     backgroundColor: '#E8E8E8',
     paddingTop: 3,
+    marginTop: 3,
   },
   tabText: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 10,
   }
 });

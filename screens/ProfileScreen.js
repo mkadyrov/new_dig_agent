@@ -40,6 +40,7 @@ class ProfileScreen extends React.Component {
           (result) => {
             this.data = result;
             this.setState({statusLoad: true});
+            console.log(result)
           },
           (error) => {}
         );
@@ -87,12 +88,12 @@ class ProfileScreen extends React.Component {
           <CustomHeader navigation={this.props.navigation} title="Профиль" />
           {this.state.statusLoad &&
             <ScrollView>
-              <Image style={styles.image} source={require('../assets/images/image.jpg')} />
+              <Image style={styles.image} source={this.data.user.serviceProvider.image ? this.data.user.serviceProvider.image : require('../assets/images/image.jpg')} />
               <View style={styles.containerScreen}>
                 <Text style={[styles.label, {marginTop: 0}]}>ФИО</Text>
                 <View style={[styles.value, {flexDirection: 'row'}]}>
-                  <View style={styles.tab}><Text style={styles.value}>{this.data.user.name.slice(0,1)}</Text></View>
-                  <Text style={[styles.value, {marginTop: 5}]}>{this.data.user.name}</Text>
+                  <View style={styles.tab}><Text style={styles.tabvalue}>{String(this.data.user.name).trim().slice(0,1)}</Text></View>
+                  <Text style={[styles.value, {marginTop: 5}]}>{String(this.data.user.name).trim()}</Text>
                 </View>
                 <Text style={styles.label}>Должность</Text>
                 <Text style={styles.value}>{this.data.user.position}</Text>
@@ -114,8 +115,8 @@ class ProfileScreen extends React.Component {
                       if (contact.name) {
                         return (
                         <View key={index3} style={[styles.value, {flexDirection: 'row', marginBottom: 10,}]}>
-                          <View style={styles.tab}><Text style={styles.value}>{contact.name.slice(0,1)}</Text></View>
-                          <Text style={[styles.value, {marginTop: 5}]}>{contact.name}</Text>
+                          <View style={styles.tab}><Text style={styles.tabvalue}>{String(contact.name).trim().slice(0,1)}</Text></View>
+                          <Text style={[styles.value, {marginTop: 5}]}>{String(contact.name).trim()}</Text>
                         </View>
                         );
                       }
@@ -199,12 +200,16 @@ const styles = StyleSheet.create({
   tab: {
     backgroundColor: '#E8E8E8',
     borderRadius: 40,
-    width: 40,
-    height: 40,
-    marginRight: 15,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingTop: 5,
+    width: 24,
+    height: 24,
+    marginRight: 10,
+    paddingTop: 2,
+    marginTop: 6,
+  },
+  tabvalue: {
+    fontSize: 10,
+    textAlign: 'center',
+    width: '100%',
   },
   line: {
     width: '100%',

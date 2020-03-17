@@ -40,7 +40,7 @@ class DrawerContentComponent extends React.Component {
                         <Text style={styles.userBlockTabNameText}>АК</Text>
                     </View>
                     <View>
-                        <Text style={styles.userBlockName}>{this.user?.name}</Text>
+                        <Text style={styles.userBlockName}>{String(this.user?.name).trim()}</Text>
                         <Text style={styles.userBlockSubName}>{this.user?.position}</Text>
                     </View>
                 </View>

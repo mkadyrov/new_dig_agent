@@ -54,15 +54,15 @@ class LoginScreen extends React.Component {
       )
       .then(res => res.json())
       .then(
-        (result) => {
+        async (result) => {
           this.setPostion(false);
           // AsyncStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTVmNWU4MjVkYzI5ODAwNTQ4MjZhN2UiLCJleHAiOjE1ODg1Mjg1MjAsImlhdCI6MTU4MzM0NDUyMH0.8bG-smVSse2kRKj9E2qzj-WQGCrDrMWVTlgOHvJDh7A');
           // AsyncStorage.setItem('token', result.token);
           if (result.token) {
             // supervisor operator
             if (result.role.name === 'operator' || result.role.name === 'supervisor') {
-              AsyncStorage.setItem('id', result._id);
-              AsyncStorage.setItem('token', result.token);
+              await AsyncStorage.setItem('id', result._id);
+              await AsyncStorage.setItem('token', result.token);
               this.props.navigation.navigate('Home');
             } else {
               this.setState({successFalse: false, successNotTrue: true, successInvalid: false})

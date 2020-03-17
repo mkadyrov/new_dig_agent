@@ -10,7 +10,7 @@ const CustomHeader = ({ navigation, title }) => {
     return (<Header
       containerStyle={[styles.container]}
       leftComponent={<Icon name="menu" style={[styles.icon]} onPress={() => navigation.openDrawer()} />}
-      centerComponent={<Image style={[styles.image]} source={require('../../assets/images/logo.png')} />}
+      centerComponent={<Image style={{height: 30, width: 80, marginLeft: -15}} source={require('../../assets/images/logo.png')} />}
     />);
   } else {
     return (<Header

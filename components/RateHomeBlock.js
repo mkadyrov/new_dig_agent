@@ -30,16 +30,12 @@ class RateHomeBlock extends React.Component {
         <View style={styles.tableHead}>
           <Text style={styles.tableHead1}>Абонент</Text>
           <Text style={styles.tableHead2}>Рейтинг</Text>
-          {this.props.type == 2 &&
-            <Text style={styles.tableHead3}>Время</Text>
-          }
+          <Text style={styles.tableHead3}>Время</Text>
         </View>
         <View style={styles.tables}>
           {this.props.data.map((item, index) => {
             if (item.User.phone && item.ContactPerson.name) {
-              if (item.User.phone.work && item.ContactPerson.name !== '') {
-                return (<RateHomeAbonent key={index} navigation={this.props.navigation} data={item} link={this.props.sublink} type={this.props.type} />);
-              }
+              return (<RateHomeAbonent key={index} navigation={this.props.navigation} data={item} link={this.props.sublink} type={this.props.type} />);
             }
           })}
         </View>
@@ -77,7 +73,7 @@ const styles = StyleSheet.create({
   },
   tableHead: {
     flexDirection: 'row',
-    padding: 10,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderColor: '#DDD',
     borderStyle: 'solid',
@@ -90,12 +86,12 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   tableHead2: {
-    width: '35%',
+    width: '40%',
     color: '#777',
     fontSize: 13,
   },
   tableHead3: {
-    width: '20%',
+    width: '25%',
     color: '#777',
     fontSize: 13,
     textAlign: 'right',

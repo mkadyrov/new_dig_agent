@@ -32,6 +32,10 @@ class ComplaintsProcessScreen extends React.Component {
         .then(
           (result) => {
             this.data = result;
+            this.data.reviews = this.data.reviews.map((item) => {
+              item.User.phone.mobile = String(item.User.phone.mobile).replace(/\(/g, '').replace(/\)/g, '').replace(/\s/g, '').replace(/\+/g, '').replace(/\-/g, '');
+              return item;
+            });
             this.setState({statusLoad: true});
           },
           (error) => {}
@@ -56,11 +60,10 @@ class ComplaintsProcessScreen extends React.Component {
               <Text style={styles.topTitle}>
                 <Image style={{ width: 25, height: 20, }} source={require('../assets/images/2.png')} /> Активные
               </Text>
-              <Text style={styles.topTitleText}>Нет данных</Text>
               <View style={styles.tableHead}>
                 <Text style={styles.tableHead1}>Абонент</Text>
                 <Text style={styles.tableHead2}>Рейтинг</Text>
-                <Text style={styles.tableHead3}></Text>
+                <Text style={styles.tableHead3}>Время</Text>
               </View>
               <View style={styles.tables}>
                 {this.data.reviews.map((item, index) => {
@@ -68,13 +71,13 @@ class ComplaintsProcessScreen extends React.Component {
                     return (
                       <TouchableOpacity onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item})}>
                       <View key={index} style={styles.abonentCont}>
-                        <Text style={styles.phone}>{item.User.phone.work}</Text>
+                        <Text style={styles.phone}>{`${item.User.phone.mobile.slice(0, 1)} ${item.User.phone.mobile.slice(1, 4)} ${item.User.phone.mobile.slice(4, 7)} ${item.User.phone.mobile.slice(7, 9)} ${item.User.phone.mobile.slice(9, item.User.phone.mobile.length)}`}</Text>
                         <View style={styles.rates}>
-                          <Image style={styles.star} source={item.rate >= 1 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                          <Image style={styles.star} source={item.rate >= 2 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                          <Image style={styles.star} source={item.rate >= 3 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                          <Image style={styles.star} source={item.rate >= 4 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
-                          <Image style={styles.star} source={item.rate >= 5 ? require('../assets/images/star.png') : require('../assets/images/star-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 1 ? item.rate === 1 || item.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 2 ? item.rate === 2 || item.rate > 2.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 3 ? item.rate === 3 || item.rate > 3.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 4 ? item.rate === 4 || item.rate > 4.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
+                          <Image style={styles.star} source={item.rate >= 5 ? item.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
                         </View>
                         <View style={styles.time}>
                           {this.getM(this.props.data) &&
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
   },
   tableHead: {
     flexDirection: 'row',
-    padding: 10,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderColor: '#DDD',
     borderStyle: 'solid',
@@ -193,25 +196,29 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   tab: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     borderRadius: 50,
     backgroundColor: '#E8E8E8',
-    paddingTop: 3,
+    paddingTop: 2.5,
+    marginTop: 3,
   },
   tabText: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 10,
+    position: 'relative',
+    right: 1.5,
   },
   tabTimeout: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     borderRadius: 50,
     backgroundColor: '#d91414',
     paddingTop: 3,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 3,
   },
 });

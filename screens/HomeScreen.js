@@ -36,11 +36,12 @@ class HomeScreen extends React.Component {
         .then(
           (result) => {
             this.data = result;
-            this.data.reviews.inProcessReviews = this.data.reviews.inProcessReviews.map(item=>{
-              item.timer= Math.floor(parseFloat(moment(item.createdAt).add(5,"minutes").format("x"))) - Math.floor(parseFloat(moment().format("x")));
-            return item;
+            this.data.reviews.inProcessReviews = this.data.reviews.inProcessReviews.map(item=> {
+              item.timer = Math.floor(parseFloat(moment(item.createdAt).add(5,"minutes").format("x"))) - Math.floor(parseFloat(moment().format("x")));
+              return item;
             });
             this.setState({statusLoad: true});
+            console.log(result);
           },
           (error) => {}
         );
@@ -58,7 +59,7 @@ class HomeScreen extends React.Component {
             <ScrollView>
               <View style={styles.containerScreen}>
                 <Text style={[styles.topTitle, {paddingBottom: 0}]}>Добро пожаловать</Text>
-                <Text style={[styles.topTitle, {fontSize: 19}]}>{this.data.userName}!</Text>
+                <Text style={[styles.topTitle, {fontSize: 19}]}>{String(this.data.userName).trim()}!</Text>
                 <View style={styles.companyRate}>
                   <Text style={styles.nameCompany}>{this.data.serviceProvider.nameRu}</Text>
                   <View style={styles.companyRateCont}>
@@ -95,7 +96,7 @@ class HomeScreen extends React.Component {
                   <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Активные" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
                 }
                 {this.data.reviews.inProcessReviews.length > 0 &&
-                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Завершенные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
+                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.resolvedReviews} title="Завершенные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
                 }
                 <Copy />
               </View>
@@ -164,6 +165,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#DDD',
     padding: 10,
+    borderRadius: 3,
   },
   complaintBlockL: {
     width: '50%',
