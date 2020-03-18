@@ -130,7 +130,7 @@ class DetailsScreen extends React.Component {
                 </View>
               </View>
               <View style={styles.rateBlockTitleSelect}>
-                <Text style={[styles.rateBlockTitle, {width: '30%'}]}>Рейтинг за</Text>
+                <Text style={[styles.rateBlockTitle, {width: '30%'}]}>Рейтинг за:</Text>
                 <View style={styles.rateBlockTitleTabs}>
                   {Object.keys(this.data.avgRatingsPerTimeInterval.weeklyRating).length > 0 &&
                     <Text onPress={() => this.setActive(1)} style={[styles.rateBlockTitleTab, this.state.activeInterval == 1 ? styles.active : null]}>Неделю</Text>
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   rateBlockTitleTabs: {
     flexDirection: 'row',
     width: '70%',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   rateBlockTitleTab: {
     fontSize: 13,

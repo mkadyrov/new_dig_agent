@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {AsyncStorage, StyleSheet, Text, View} from 'react-native';
+import {AsyncStorage, StyleSheet, Text, View, Image} from 'react-native';
 import {Icon} from 'native-base';
 import DetailsScreen from "../screens/DetailsScreen";
 
@@ -46,22 +46,22 @@ class DrawerContentComponent extends React.Component {
                 </View>
                 <View style={styles.menuBlock}>
                     <View style={styles.menuBlockTab}>
-                        <Icon name="person" style={styles.menuBlockTabIcon}/>
+                        <Image style={{height: 20, width: 20, marginRight: 15}} source={require('../assets/images/account.png')} />
                         <Text style={styles.menuBlockTabText}
                               onPress={() => this.props.navigation.navigate('ProfileScreen')}>Профиль</Text>
                     </View>
                     <View style={styles.menuBlockTab}>
-                        <Icon name="ios-timer" style={styles.menuBlockTabIcon}/>
+                        <Image style={{height: 20, width: 20, marginRight: 15}} source={require('../assets/images/history.png')} />
                         <Text style={styles.menuBlockTabText}
                               onPress={() => this.props.navigation.navigate('HistoryScreen')}>История</Text>
                     </View>
                     <View style={styles.menuBlockTab}>
-                        <Icon name="ios-help-circle-outline" style={styles.menuBlockTabIcon}/>
+                        <Image style={{height: 20, width: 20, marginRight: 15}} source={require('../assets/images/help.png')} />
                         <Text style={styles.menuBlockTabText}
                               onPress={() => this.props.navigation.navigate('HelpScreen')}>Помощь</Text>
                     </View>
                     <View style={styles.menuBlockTab}>
-                        <Icon name="exit" style={styles.menuBlockTabIcon}/>
+                        <Image style={{height: 20, width: 20, marginRight: 15}} source={require('../assets/images/exit.png')} />
                         <Text style={styles.menuBlockTabText} onPress={() => this.props.navigation.navigate('Login')}>Выход</Text>
                     </View>
                 </View>

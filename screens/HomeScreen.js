@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'left',
     color: '#FAAD14',
-    textTransform: 'uppercase',
   },
   complaintCont: {
     flexDirection: 'row',

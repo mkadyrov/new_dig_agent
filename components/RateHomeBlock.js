@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'right',
     color: '#FAAD14',
-    textTransform: 'uppercase',
     paddingTop: 5,
   },
   tableHead: {
