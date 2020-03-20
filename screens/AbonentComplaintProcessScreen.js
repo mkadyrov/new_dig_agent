@@ -111,10 +111,18 @@ class AbonentComplaintProcessScreen extends React.Component {
                         </View>
                         <Text style={styles.label}>Абонент</Text>
                         <Text style={styles.value}>{this.data.User.phone.mobile[0] ? this.data.User.phone.mobile[0] : ''}</Text>
-                        <Text style={styles.label}>ФИО</Text>
-                        <Text style={styles.value}>{this.data.User.name ? this.data.User.name : ''}</Text>
-                        <Text style={styles.label}>ИИН</Text>
-                        <Text style={styles.value}></Text>
+                        {this.data.User.name !== '' &&
+                          <Text style={styles.label}>ФИО</Text>
+                        }
+                        {this.data.User.name !== '' &&
+                          <Text style={styles.value}>{this.data.User.name ? this.data.User.name : ''}</Text>
+                        }
+                        {this.data.User.iin &&
+                          <Text style={styles.label}>ИИН</Text>
+                        }
+                        {this.data.User.iin &&
+                          <Text style={styles.value}></Text>
+                        }
                         <Text style={styles.label}>Email</Text>
                         <Text style={styles.value}>{this.data.User?.email}</Text>
                         <Text style={styles.label}>Оценка</Text>
@@ -125,32 +133,37 @@ class AbonentComplaintProcessScreen extends React.Component {
                             <Image style={styles.star} source={this.data.review.rate >= 4 ? this.data.review.rate === 4 || this.data.review.rate > 4.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
                             <Image style={styles.star} source={this.data.review.rate >= 5 ? this.data.review.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
                         </View>
-                        <Text style={styles.label}>Категория</Text>
-                        <View style={styles.categoryBlock}>
-                            {this.data.review.categories.map((category, index) =>
-                                <View key={index} style={styles.category}>
-                                    <View key={index}>
-                                        <Image style={styles.catImg}
-                                               source={{url: 'https://api2.digitalagent.kz/' + category.image}}/>
-                                    </View>
-                                    <Text style={styles.categoryText}>{category.nameRu}</Text>
-                                </View>
-                            )}
-                        </View>
-                        <Text style={styles.label}>Жалобы</Text>
-                        <View style={styles.complaintBlock}>
-                            {this.complaints.map((complaint, index) =>
-                                <View key={index} style={styles.complaint}>
-                                    <Text style={styles.complaintText}>{complaint}</Text>
-                                </View>
-                            )}
-                        </View>
+                        {this.data.categories &&
+                          <Text style={styles.label}>Категория</Text>
+                        }
+                        {this.data.categories &&
+                          <View style={styles.categoryBlock}>
+                              {this.data.review.categories.map((category, index) =>
+                                  <View key={index} style={styles.category}>
+                                      <View key={index}>
+                                          <Image style={styles.catImg}
+                                                 source={{url: 'https://api2.digitalagent.kz/' + category.image}}/>
+                                      </View>
+                                      <Text style={styles.categoryText}>{category.nameRu}</Text>
+                                  </View>
+                              )}
+                          </View>
+                        }
+                        {this.data.complaints &&
+                          <Text style={styles.label}>Жалобы</Text>
+                        }
+                        {this.data.complaints &&
+                          <View style={styles.complaintBlock}>
+                              {this.complaints.map((complaint, index) =>
+                                  <View key={index} style={styles.complaint}>
+                                      <Text style={styles.complaintText}>{complaint}</Text>
+                                  </View>
+                              )}
+                          </View>
+                        }
                         <Text style={styles.label}>Комментарий</Text>
                         <Text style={styles.value}>{this.data.review.text}
                         </Text>
-
-            <Text style={styles.label}>Фотография</Text>
-            <Image style={styles.photo} source={require('../assets/images/image.jpg')} />
           </View>
 
           <View style={styles.callBlock}>

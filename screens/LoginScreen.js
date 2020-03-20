@@ -14,9 +14,9 @@ class LoginScreen extends React.Component {
     this.state = {
       recover: false,
       position: 'center',
-      email: '',
+      email: 'centr_almaty@mail.ru',
       emailRecover: '',
-      password: '',
+      password: '123456789',
       token: '',
       success: false,
       successFalse: false,

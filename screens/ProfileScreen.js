@@ -106,7 +106,7 @@ class ProfileScreen extends React.Component {
                 <Text style={styles.label}>Электронная почта</Text>
                 <Text style={styles.value}>{this.data.user.email}</Text>
                 <Text style={styles.label}>Организация</Text>
-                <Text style={styles.value}>{this.data.user.organization.nameRu}</Text>
+                <Text style={styles.value}>{this.data.user.organization !== null ? this.data.user.organization.nameRu : ''}</Text>
                 {this.data.contactPersons &&
                   <View>
                     <View style={styles.line}></View>
