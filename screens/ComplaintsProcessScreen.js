@@ -50,6 +50,13 @@ class ComplaintsProcessScreen extends React.Component {
     return false;
   }
 
+  async nav(item) {
+    await AsyncStorage.setItem('idC', item._id);
+
+    this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item._id});
+    await this.props.navigation.setOptions({item: item._id});
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -69,7 +76,7 @@ class ComplaintsProcessScreen extends React.Component {
                 {this.data.reviews.map((item, index) => {
                   if (item.Operator.name) {
                     return (
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item})}>
+                      <TouchableOpacity onPress={() => this.nav(item)}>
                       <View key={index} style={styles.abonentCont}>
                         <Text style={styles.phone}>{`${item.User.phone.mobile.slice(0, 1)} ${item.User.phone.mobile.slice(1, 4)} ${item.User.phone.mobile.slice(4, 7)} ${item.User.phone.mobile.slice(7, 9)} ${item.User.phone.mobile.slice(9, item.User.phone.mobile.length)}`}</Text>
                         <View style={styles.rates}>

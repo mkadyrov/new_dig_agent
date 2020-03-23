@@ -93,6 +93,7 @@ export default function SideBarNavigator({ navigation, route }) {
             <Drawer.Screen
                 name="ComplaintsProcessScreen"
                 component={ComplaintsProcessScreen}
+                navigation={navigation}
                 options={{
                     title: 'Активные',
                     tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,

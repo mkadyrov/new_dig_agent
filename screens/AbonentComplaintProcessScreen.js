@@ -36,22 +36,26 @@ class AbonentComplaintProcessScreen extends React.Component {
         return 5;
     }
 
+    componentWillUnmount() {
+
+    }
+
     componentDidMount() {
         AsyncStorage.getItem('token').then((value) => {
             if (value !== '') {
-                fetch(`https://api2.digitalagent.kz/api/reviews/${this.props.route.params.item._id}`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': value,
-                        },
-                    }
-                )
+              AsyncStorage.getItem('idC').then((vl) => {
+                    fetch(`https://api2.digitalagent.kz/api/reviews/${vl}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': value,
+                            },
+                        }
+                    )
                     .then(res => res.json())
                     .then(
                         (result) => {
                             this.data = result;
-                            console.log(result)
                             // let timer = moment(this.data.review.createdAt).format("X") - moment().format("X");
 
                             this.data.timer= Math.floor(parseFloat(moment(this.data.review.createdAt).add(5,"minutes").format("x"))) - Math.floor(parseFloat(moment().format("x")));
@@ -88,6 +92,7 @@ class AbonentComplaintProcessScreen extends React.Component {
                         (error) => {
                         }
                     );
+                  });
             } else {
                 this.props.navigation.navigate('Login');
             }
