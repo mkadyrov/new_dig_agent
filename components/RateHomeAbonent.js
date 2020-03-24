@@ -17,14 +17,19 @@ class RateHomeAbonent extends React.Component {
   }
 
   componentDidMount() {
-    this.props.data.User.phone.mobile = String(this.props.data.User.phone.mobile).replace(/\(/g, '').replace(/\)/g, '').replace(/\s/g, '').replace(/\+/g, '').replace(/\-/g, '');
+
+  }
+
+  getPhone(phone) {
+    const b = String(phone).replace(/\(/g, '').replace(/\)/g, '').replace(/\s/g, '').replace(/\+/g, '').replace(/\-/g, '');
+    return String(b).substr(1, 10);
   }
 
   render() {
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.link, {item: this.props.data})}>
         <View style={styles.container}>
-          <Text style={styles.phone}>{`${String(this.props.data.User.phone.mobile).slice(0, 1)} ${String(this.props.data.User.phone.mobile).slice(1, String(this.props.data.User.phone.mobile).length)}`}</Text>
+          <Text style={styles.phone}>{`${String(this.props.data.User.phone.mobile).slice(0, 1)} ${this.getPhone(this.props.data.User.phone.mobile)}`}</Text>
           <View style={styles.rates}>
             <Image style={styles.star} source={this.props.data.rate >= 1 ? this.props.data.rate === 1 || this.props.data.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
             <Image style={styles.star} source={this.props.data.rate >= 2 ? this.props.data.rate === 2 || this.props.data.rate > 2.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
@@ -71,13 +76,14 @@ const styles = StyleSheet.create({
     marginTop: 15,
     flexDirection: 'row',
     padding: 10,
+    paddingLeft: 5,
   },
   phone: {
     width: '34%',
     height: 30,
     fontSize: 12,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingTop: 3,
   },
   rates: {

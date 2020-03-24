@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { withNavigation } from 'react-navigation';
 import {AsyncStorage, Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CustomHeader from "../components/CustomHeader";
+import { NavigationContainer } from '@react-navigation/native';
 import {Icon} from 'native-base';
 import CountDown from 'react-native-countdown-component';
 import moment from "moment";
@@ -35,12 +37,9 @@ class AbonentComplaintProcessScreen extends React.Component {
         // console.log(this.data.createdAt) ;
         return 5;
     }
-
-    componentWillUnmount() {
-
-    }
-
+    
     componentDidMount() {
+      console.log(1);
         AsyncStorage.getItem('token').then((value) => {
             if (value !== '') {
               AsyncStorage.getItem('idC').then((vl) => {
@@ -224,7 +223,7 @@ class AbonentComplaintProcessScreen extends React.Component {
   }
 }
 
-export default AbonentComplaintProcessScreen;
+export default withNavigation(AbonentComplaintProcessScreen);
 
 const styles = StyleSheet.create({
   container: {

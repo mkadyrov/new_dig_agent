@@ -13,14 +13,20 @@ class ComplaintsProcessScreen extends React.Component {
     super(props);
     this.state = {
       statusLoad: false,
+      page: 1,
     };
-    this.data = {};
+    this.items = {};
+    this.pages = [];
   }
 
   componentDidMount() {
+    this.getApi(1);
+  }
+
+  getApi(page) {
     AsyncStorage.getItem('token').then((value) => {
       if (value !== '') {
-        fetch("https://api2.digitalagent.kz/api/admin/reviews?status=inProcess&page=1",
+        fetch(`https://api2.digitalagent.kz/api/admin/reviews?status=inProcess&page=${page}`,
           {
             method: 'GET',
             headers: {
@@ -31,11 +37,21 @@ class ComplaintsProcessScreen extends React.Component {
         .then(res => res.json())
         .then(
           (result) => {
-            this.data = result;
-            this.data.reviews = this.data.reviews.map((item) => {
+            this.items = result;
+            this.items.reviews = this.items.reviews.map((item) => {
               item.User.phone.mobile = String(item.User.phone.mobile).replace(/\(/g, '').replace(/\)/g, '').replace(/\s/g, '').replace(/\+/g, '').replace(/\-/g, '');
               return item;
             });
+            let pg = 0;
+            if (result.total > result.pageSize) {
+              pg = Math.round(result.total / result.pageSize);
+            } else {
+              pg = 1;
+            }
+            this.pages = [];
+            for (let i = 0; i < pg; i += 1) {
+              this.pages.push(i);
+            }
             this.setState({statusLoad: true});
           },
           (error) => {}
@@ -46,15 +62,19 @@ class ComplaintsProcessScreen extends React.Component {
     });
   }
 
+  setPage(index) {
+    if (index !== this.state.page) {
+      this.getApi(index);
+      this.setState({page: index});
+    }
+  }
+
   getM(item) {
     return false;
   }
 
-  async nav(item) {
-    await AsyncStorage.setItem('idC', item._id);
-
+  nav(item) {
     this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item._id});
-    await this.props.navigation.setOptions({item: item._id});
   }
 
   render() {
@@ -73,11 +93,11 @@ class ComplaintsProcessScreen extends React.Component {
                 <Text style={styles.tableHead3}>Время</Text>
               </View>
               <View style={styles.tables}>
-                {this.data.reviews.map((item, index) => {
+                {this.items.reviews.map((item, index) => {
                   if (item.Operator.name) {
                     return (
-                      <TouchableOpacity onPress={() => this.nav(item)}>
-                      <View key={index} style={styles.abonentCont}>
+                      <TouchableOpacity key={index} onPress={() => this.nav(item)}>
+                      <View style={styles.abonentCont}>
                         <Text style={styles.phone}>{`${item.User.phone.mobile.slice(0, 1)} ${item.User.phone.mobile.slice(1, 4)} ${item.User.phone.mobile.slice(4, 7)} ${item.User.phone.mobile.slice(7, 9)} ${item.User.phone.mobile.slice(9, item.User.phone.mobile.length)}`}</Text>
                         <View style={styles.rates}>
                           <Image style={styles.star} source={item.rate >= 1 ? item.rate === 1 || item.rate > 1.9 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
@@ -87,14 +107,14 @@ class ComplaintsProcessScreen extends React.Component {
                           <Image style={styles.star} source={item.rate >= 5 ? item.rate === 5 ? require('../assets/images/stars.png') : require('../assets/images/stars2.png') : require('../assets/images/stars-gray.png')} />
                         </View>
                         <View style={styles.time}>
-                          {this.getM(this.props.data) &&
+                          {this.getM(this.props.items) &&
                             <View style={styles.tab}>
                               <Text style={styles.tabText}>
                                 {item.Operator.name.slice(0, 1)}
                               </Text>
                             </View>
                           }
-                          {!this.getM(this.props.data) &&
+                          {!this.getM(this.props.items) &&
                             <View style={styles.tabTimeout}>
                               <Image source={require('../assets/images/crown.png')} style={{width: 15, height: 10, marginTop: -5}}/>
                             </View>
@@ -105,6 +125,13 @@ class ComplaintsProcessScreen extends React.Component {
                     );
                   }
                 })}
+              </View>
+              <View style={styles.pagination}>
+                {this.pages.map((i, index) =>
+                  <TouchableOpacity key={index} style={styles.paginationTab} onPress={() => this.setPage(index + 1)}>
+                    <Text style={[styles.paginationText, {backgroundColor: this.state.page === (index + 1) ? '#AAA' : '#EEE'}]}>{index + 1}</Text>
+                  </TouchableOpacity>
+                )}
               </View>
               <Copy />
             </View>
@@ -118,6 +145,26 @@ class ComplaintsProcessScreen extends React.Component {
 export default ComplaintsProcessScreen;
 
 const styles = StyleSheet.create({
+  pagination: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  paginationTab: {
+    width: '20%',
+    padding: 5,
+  },
+  paginationText: {
+    width: '100%',
+    backgroundColor: '#EEE',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#DDD',
+    paddingTop: 10,
+    paddingBottom: 10,
+    textAlign: 'center',
+  },
   container: {
     height: '100%',
   },

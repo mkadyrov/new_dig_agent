@@ -14,15 +14,22 @@ class ComplaintsProcessedScreen extends React.Component {
     this.state = {
       statusLoad: false,
       countsUser: [],
+      page: 1,
     };
+    this.countsUser = [];
     this.data = [];
     this.users = [];
+    this.pages = [];
   }
 
   componentDidMount() {
+    this.getApi(1);
+  }
+
+  getApi(page) {
     AsyncStorage.getItem('token').then((value) => {
       if (value !== '') {
-        fetch("https://api2.digitalagent.kz/api/admin/reviews?status=inProcess&page=1",
+        fetch(`https://api2.digitalagent.kz/api/admin/reviews?status=inProcess&page=1`,
           {
             method: 'GET',
             headers: {
@@ -33,16 +40,28 @@ class ComplaintsProcessedScreen extends React.Component {
         .then(res => res.json())
         .then(
           (result) => {
-            this.data = result;
+            this.data = [];
+            this.users = [];
+            this.countsUser = [];
             result.reviews.forEach((item) => {
               if (this.users.indexOf(item.Operator._id) === -1) {
                 this.users.push(item.Operator._id);
               }
             });
-            this.data.reviews = this.data.reviews.map((item) => {
+            this.data.reviews = result.reviews.map((item) => {
               item.User.phone.mobile = String(item.User.phone.mobile).replace(/\(/g, '').replace(/\)/g, '').replace(/\s/g, '').replace(/\+/g, '').replace(/\-/g, '');
               return item;
-            });           
+            });
+            let pg = 0;
+            if (result.total > result.pageSize) {
+              pg = Math.round(result.total / result.pageSize);
+            } else {
+              pg = 1;
+            }
+            this.pages = [];
+            for (let i = 0; i < pg; i += 1) {
+              this.pages.push(i);
+            }
             this.setState({statusLoad: true});
           },
           (error) => {}
@@ -51,6 +70,13 @@ class ComplaintsProcessedScreen extends React.Component {
         this.props.navigation.navigate('Login');
       }
     });
+  }
+
+  setPage(index) {
+    if (index !== this.state.page) {
+      this.getApi(index);
+      this.setState({page: index});
+    }
   }
 
   render() {
@@ -67,8 +93,8 @@ class ComplaintsProcessedScreen extends React.Component {
             {this.users.map((user, index) =>
               <View key={index} style={styles.row}>
                 {this.data.reviews.map((item, index) => {
-                  if (item.Operator._id === user && item.Operator.name && this.state.countsUser.indexOf(item.Operator._id) === -1) {
-                    this.state.countsUser.push(item.Operator._id);
+                  if (item.Operator._id === user && item.Operator.name && this.countsUser.indexOf(item.Operator._id) === -1) {
+                    this.countsUser.push(item.Operator._id);
                     return (
                       <View>
                         <Text style={[styles.label, {marginTop: 0}]}>Сотрудник</Text>
@@ -116,6 +142,13 @@ class ComplaintsProcessedScreen extends React.Component {
               </View>
             )}
             <View>
+            <View style={styles.pagination}>
+              {this.pages.map((i, index) =>
+                <TouchableOpacity key={index} style={styles.paginationTab} onPress={() => this.setPage(index + 1)}>
+                  <Text style={[styles.paginationText, {backgroundColor: this.state.page === (index + 1) ? '#AAA' : '#EEE'}]}>{index + 1}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
             <Copy />
             </View>
           </View>
@@ -129,6 +162,26 @@ class ComplaintsProcessedScreen extends React.Component {
 export default ComplaintsProcessedScreen;
 
 const styles = StyleSheet.create({
+  pagination: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  paginationTab: {
+    width: '20%',
+    padding: 5,
+  },
+  paginationText: {
+    width: '100%',
+    backgroundColor: '#EEE',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#DDD',
+    paddingTop: 10,
+    paddingBottom: 10,
+    textAlign: 'center',
+  },
   container: {
     height: '100%',
   },

@@ -92,12 +92,8 @@ class HomeScreen extends React.Component {
                     </View>
                   </View>
                 </View>
-                {this.data.reviews.inProcessReviews.length > 0 &&
-                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Активные" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
-                }
-                {this.data.reviews.inProcessReviews.length > 0 &&
-                  <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.resolvedReviews} title="Завершенные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
-                }
+                <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.inProcessReviews} title="Активные" type="2" link="ComplaintsProcessScreen" sublink="AbonentComplaintProcessScreen" />
+                <RateHomeBlock navigation={this.props.navigation} data={this.data.reviews.resolvedReviews} title="Завершенные" type="3" link="ComplaintsProcessedScreen" sublink="AbonentComplaintProcessedScreen" />
                 <Copy />
               </View>
             </ScrollView>

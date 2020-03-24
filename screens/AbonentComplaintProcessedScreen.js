@@ -41,6 +41,9 @@ class AbonentComplaintProcessedScreen extends React.Component {
     };
     this.complaints = [];
     this.data = {};
+    AsyncStorage.getItem('idC').then((vl) => {
+      console.log(vl);
+    })
   }
 
   componentDidMount() {
