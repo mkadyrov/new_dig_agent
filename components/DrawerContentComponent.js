@@ -8,7 +8,8 @@ class DrawerContentComponent extends React.Component {
         super(props);
         this.user = {};
     }
-    componentDidMount() {
+    componentDidUpdate() {
+        if(!this.user?.name)
         AsyncStorage.getItem('token').then((value) => {
             if (value !== '') {
                 fetch("https://api2.digitalagent.kz/api/admin/profile",
@@ -62,7 +63,9 @@ class DrawerContentComponent extends React.Component {
                     </View>
                     <View style={styles.menuBlockTab}>
                         <Image style={{height: 20, width: 20, marginRight: 15}} source={require('../assets/images/exit.png')} />
-                        <Text style={styles.menuBlockTabText} onPress={() => this.props.navigation.navigate('Login')}>Выход</Text>
+                        <Text style={styles.menuBlockTabText} onPress={() => {
+                            AsyncStorage.removeItem("token");
+                            this.props.navigation.navigate('Login')}}>Выход</Text>
                     </View>
                 </View>
             </View>

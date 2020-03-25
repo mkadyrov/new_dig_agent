@@ -35,7 +35,7 @@ class LoginScreen extends React.Component {
   }
 
   componentDidMount(){
-    AsyncStorage.getItem('token').then((value) => this.setState({token: value}));
+    AsyncStorage.getItem('token').then((value) => {this.setState({token: value});   if(value)this.props.navigation.navigate('Home');});
   }
 
   setLogin() {

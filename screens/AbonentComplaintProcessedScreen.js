@@ -75,6 +75,37 @@ class AbonentComplaintProcessedScreen extends React.Component {
       }
     });
   }
+componentDidUpdate(prevProps, prevState, snapshot) {
+  if(this.data && this.data?.review && this.data.review._id != this.props.route.params.item._id){
+    AsyncStorage.getItem('token').then((value) => {
+      if (value !== '') {
+        fetch(`https://api2.digitalagent.kz/api/reviews/${this.props.route.params.item._id}`,
+            {
+              method: 'GET',
+              headers: {
+                'Authorization': value,
+              },
+            }
+        )
+            .then(res => res.json())
+            .then(
+                (result) => {
+                  this.data = result;
+                  result.review.categories.forEach((item) => {
+                    item.criterias.forEach((item2) => {
+                      this.complaints.push(item2.nameRu);
+                    })
+                  });
+                  this.setState({statusLoad: true});
+                },
+                (error) => {}
+            );
+      } else {
+        this.props.navigation.navigate('Login');
+      }
+    });
+  }
+}
 
   render() {
     return (

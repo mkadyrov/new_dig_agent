@@ -74,7 +74,7 @@ class ComplaintsProcessScreen extends React.Component {
   }
 
   nav(item) {
-    this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item._id});
+    this.props.navigation.navigate('AbonentComplaintProcessScreen', {item: item});
   }
 
   render() {

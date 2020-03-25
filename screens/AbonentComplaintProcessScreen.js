@@ -18,6 +18,8 @@ class AbonentComplaintProcessScreen extends React.Component {
         };
         this.complaints = [];
         this.data = {};
+
+
     }
 
     handleCall(tel) {
@@ -37,23 +39,23 @@ class AbonentComplaintProcessScreen extends React.Component {
         // console.log(this.data.createdAt) ;
         return 5;
     }
-    
+
     componentDidMount() {
-      console.log(1);
         AsyncStorage.getItem('token').then((value) => {
             if (value !== '') {
-              AsyncStorage.getItem('idC').then((vl) => {
-                    fetch(`https://api2.digitalagent.kz/api/reviews/${vl}`,
-                        {
-                            method: 'GET',
-                            headers: {
-                                'Authorization': value,
-                            },
-                        }
-                    )
+                // AsyncStorage.getItem('idC').then((vl) => {
+                fetch(`https://api2.digitalagent.kz/api/reviews/${this.props.route.params.item._id}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': value,
+                        },
+                    }
+                )
                     .then(res => res.json())
                     .then(
                         (result) => {
+                            console.log("resuly",result);
                             this.data = result;
                             // let timer = moment(this.data.review.createdAt).format("X") - moment().format("X");
 
@@ -91,11 +93,74 @@ class AbonentComplaintProcessScreen extends React.Component {
                         (error) => {
                         }
                     );
-                  });
+                // });
             } else {
                 this.props.navigation.navigate('Login');
             }
         });
+    }
+
+    componentDidUpdate() {
+        // this.focusListner = this.props.navigation.addListener("didFocus",() => {
+        if(this.data && this.data?.review && this.data.review._id != this.props.route.params.item._id)
+        AsyncStorage.getItem('token').then((value) => {
+            if (value !== '') {
+              // AsyncStorage.getItem('idC').then((vl) => {
+                    fetch(`https://api2.digitalagent.kz/api/reviews/${this.props.route.params.item._id}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': value,
+                            },
+                        }
+                    )
+                    .then(res => res.json())
+                    .then(
+                        (result) => {
+                            console.log("resuly",result);
+                            this.data = result;
+                            // let timer = moment(this.data.review.createdAt).format("X") - moment().format("X");
+
+                            this.data.timer= Math.floor(parseFloat(moment(this.data.review.createdAt).add(5,"minutes").format("x"))) - Math.floor(parseFloat(moment().format("x")));
+
+                            result.review.categories.forEach((item) => {
+                                item.criterias.forEach((item2) => {
+                                    this.complaints.push(item2.nameRu);
+                                })
+                            });
+                            // const date = this.data.review.createdAt.split('T');
+                            // const date_p = date[0].split('-');
+                            // const time = date[1].split('.');
+                            // const time_p = time[0].split(':');
+                            // //const old_date = new Date(Number(date_p[0]), Number(date_p[1]) - 1, Number(date_p[2]), Number(time_p[0]), Number(time_p[1]), Number(time_p[2]));
+                            // const old_date = new Date(2020, 2, 6, 2, 51);//dssadss
+                            // const new_date = new Date();
+                            // const timer_m = Math.ceil((new_date.getTime() - old_date.getTime()) / (60000));
+                            // let timeTextM = 5;
+                            // let timeTextS = 59;
+                            // if (timer_m > 5) {
+                            //     this.setState({timerStatus: true, time: '00:00'})
+                            // } else {
+                            //     const timeInt = setInterval(() => {
+                            //         timeTextM = `0${Math.ceil((new_date.getTime() - old_date.getTime()) / (60000))}`;
+                            //         timeTextS = `${Math.ceil((new_date.getTime() - old_date.getTime()) / (6000))}`;
+                            //         this.setState({time: `${timeTextM}:${timeTextS}`});
+                            //     }, 1000);
+                            // }
+                            if (this.data.timer < 1) {
+                                this.setState({timerStatus: true})
+                            }
+                            this.setState({statusLoad: true});
+                        },
+                        (error) => {
+                        }
+                    );
+                  // });
+            } else {
+                this.props.navigation.navigate('Login');
+            }
+        });
+        // });
     }
 
     render() {
@@ -109,7 +174,7 @@ class AbonentComplaintProcessScreen extends React.Component {
                             style={[styles.label, {borderTopWidth: 0, paddingTop: 0, marginTop: 0}]}>Обрабатывает</Text>
                         <View style={[styles.value, {flexDirection: 'row'}]}>
                             <View style={styles.tab}><Text
-                                style={styles.tabvalue}>{this.data.review.Operator[0] ? String(this.data.review.Operator[0].name).trim().slice(0, 1) : ''}</Text></View>
+                                style={styles.tabvalue}>{this.data.review?.Operator[0] ? String(this.data.review.Operator[0].name).trim().slice(0, 1) : ''}</Text></View>
                             <Text
                                 style={[styles.value, {marginTop: 5}]}>{this.data.review.Operator[0] ? String(this.data.review.Operator[0].name).trim() : ''}</Text>
                         </View>
