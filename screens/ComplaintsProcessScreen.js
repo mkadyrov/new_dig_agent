@@ -196,15 +196,16 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   tableHead2: {
-    width: '35%',
+    width: '30%',
     color: '#777',
     fontSize: 13,
   },
   tableHead3: {
-    width: '20%',
+    width: '25%',
     color: '#777',
     fontSize: 13,
     textAlign: 'right',
+    paddingRight: 15,
   },
   tables: {
     width: '100%',

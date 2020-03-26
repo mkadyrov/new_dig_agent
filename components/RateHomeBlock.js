@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     color: '#777',
     fontSize: 13,
     textAlign: 'right',
+    paddingRight: 15,
   },
   tables: {
     width: '100%',
